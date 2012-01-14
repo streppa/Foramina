@@ -1,0 +1,8 @@
+name: Foramina
+main: st.fivepoints.Foramina.Foramina
+version: 0.1
+
+commands:
+   command:
+      description: A Command
+      usage: /<command> 
