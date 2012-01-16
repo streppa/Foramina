@@ -35,12 +35,12 @@ public class ForaminaPlayerListener extends PlayerListener {
 
     @Override
     public void onPlayerInteract( PlayerInteractEvent event ) {
-    	
+    	log.info("process onPlayerInteract");
     }
 
     @Override
     public void onPlayerInteractEntity( PlayerInteractEntityEvent event ) {
-    	
+    	log.info("process onPlayerInteractEntity");
     }
     
 }
