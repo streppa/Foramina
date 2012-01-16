@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 public class Foramina extends JavaPlugin {
 
     //ClassListeners
-    private final ForaminaCommandExecutor commandExecutor = new ForaminaCommandExecutor(this);
+    private final ForaminaPlayerListener playerListener = new ForaminaPlayerListener(this);
      //ClassListeners
 
     public Location playerLoc;
@@ -44,10 +44,12 @@ public class Foramina extends JavaPlugin {
         log.info("Enabling Foramina Plugin");
 
         PluginManager pm = this.getServer().getPluginManager();
-
-	getCommand("command").setExecutor(commandExecutor);
-
-	/*Some other example listeners
+        
+        pm.registerEvent(Event.Type.PLAYER_INTERACT_ENTITY, playerListener, Event.Priority.Normal, this);
+        pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Event.Priority.Normal, this);
+        
+        
+	/* Some other example listeners
 		pm.registerEvent(Event.Type.PLAYER_MOVE, playerListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.BLOCK_PLACE, blockListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Event.Priority.Normal, this);

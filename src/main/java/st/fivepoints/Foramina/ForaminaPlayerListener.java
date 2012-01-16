@@ -17,32 +17,30 @@ package st.fivepoints.Foramina;
     along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerListener;
 
 import java.util.logging.Logger;
 
-public class ForaminaCommandExecutor implements CommandExecutor {
+public class ForaminaPlayerListener extends PlayerListener {
 
     private Foramina plugin;
     Logger log = Logger.getLogger("Minecraft");//Define your logger
 
-    public ForaminaCommandExecutor(Foramina plugin) {
+    public ForaminaPlayerListener(Foramina plugin) {
         this.plugin = plugin;
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        log.info("onCommand Reached in Foramina");
-
-        if (command.getName().equalsIgnoreCase("command")) {
-	    log.info("command used");
-	      Player player = (Player) sender;
-	      player.setHealth(20);
-            return true;
-        }
-        return false;
+    public void onPlayerInteract( PlayerInteractEvent event ) {
+    	
     }
+
+    @Override
+    public void onPlayerInteractEntity( PlayerInteractEntityEvent event ) {
+    	
+    }
+    
 }
