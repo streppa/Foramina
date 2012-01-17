@@ -1,6 +1,8 @@
 name: Foramina
-main: st.fivepoints.Foramina.Foramina
+main: st.fivepoints.foramina.Foramina
 version: 0.1
+
+depend: [Spout]
 
 commands:
    command:

@@ -1,4 +1,4 @@
-package st.fivepoints.Foramina;
+package st.fivepoints.foramina;
 
 /*
     This file is part of Foramina
@@ -17,15 +17,21 @@ package st.fivepoints.Foramina;
     along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import org.bukkit.entity.Player;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+// import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
+import org.getspout.spoutapi.gui.ScreenType;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
 import java.util.logging.Logger;
 
 public class ForaminaPlayerListener extends PlayerListener {
 
+    @SuppressWarnings("unused")
     private Foramina plugin;
     Logger log = Logger.getLogger("Minecraft");//Define your logger
 
@@ -35,7 +41,31 @@ public class ForaminaPlayerListener extends PlayerListener {
 
     @Override
     public void onPlayerInteract( PlayerInteractEvent event ) {
-    	log.info("process onPlayerInteract");
+    	Action action = event.getAction();
+    	Block  block  = event.getClickedBlock();
+    	SpoutPlayer splayer = (SpoutPlayer) event.getPlayer();
+    	
+    	switch (action) {
+    	  case RIGHT_CLICK_AIR:
+    	    log.info("Right click air.");
+    	    break;
+        case RIGHT_CLICK_BLOCK:
+          if ( block.getType() == Material.SAND ) {
+            splayer.openScreen(ScreenType.PLAYER_INVENTORY);
+          }
+          break;
+        case LEFT_CLICK_AIR:
+          log.info("Left click air.");
+          break;
+        case LEFT_CLICK_BLOCK:
+          log.info("Left click block.");
+          break;
+    	}
+
+    	if ( event.hasBlock() ) {
+    	  log.info("The block was a " + block.getType().toString());
+    	}
+    	
     }
 
     @Override
