@@ -19,11 +19,14 @@ package st.fivepoints.foramina;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 // import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.gui.ScreenType;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
@@ -31,46 +34,35 @@ import java.util.logging.Logger;
 
 public class ForaminaPlayerListener extends PlayerListener {
 
-    @SuppressWarnings("unused")
-    private Foramina plugin;
-    Logger log = Logger.getLogger("Minecraft");//Define your logger
+  @SuppressWarnings("unused")
+  private Foramina plugin;
+  Logger log = Logger.getLogger("Minecraft");//Define your logger
 
-    public ForaminaPlayerListener(Foramina plugin) {
-        this.plugin = plugin;
+  public ForaminaPlayerListener(Foramina plugin) {
+    this.plugin = plugin;
+  }
+
+  // TODO: This needs to be replaced with a Scheduler. I want something like a three second delay before triggering the teleportation.
+  @Override
+  public void onPlayerMove( PlayerMoveEvent event ) {
+    SpoutPlayer player    = (SpoutPlayer) event.getPlayer();
+    SpoutBlock  blockUnderFoot = (SpoutBlock) player.getLocation().getBlock().getRelative(BlockFace.DOWN);
+    if ( blockUnderFoot.isCustomBlock() && blockUnderFoot.getCustomBlock() instanceof ActivatorPad ) {
+      this.plugin.log.info(player.getDisplayName() + " stepped on an Activator Pad.");
     }
+  }
+  
+  @Override
+  public void onPlayerInteract( PlayerInteractEvent event ) {
+  	Action      action = event.getAction();
+  	SpoutBlock  block  = (SpoutBlock) event.getClickedBlock();
+   	SpoutPlayer player = (SpoutPlayer) event.getPlayer();
 
-    @Override
-    public void onPlayerInteract( PlayerInteractEvent event ) {
-    	Action action = event.getAction();
-    	Block  block  = event.getClickedBlock();
-    	SpoutPlayer splayer = (SpoutPlayer) event.getPlayer();
+   	if ( action == Action.RIGHT_CLICK_BLOCK && block.isCustomBlock() && block.getCustomBlock() instanceof ActivatorPad ) {
+   	  this.plugin.log.info(player.getDisplayName() + " right-clicked on an Activator Pad.");
+   	  return;
+   	}
     	
-    	switch (action) {
-    	  case RIGHT_CLICK_AIR:
-    	    log.info("Right click air.");
-    	    break;
-        case RIGHT_CLICK_BLOCK:
-          if ( block.getType() == Material.SAND ) {
-            splayer.openScreen(ScreenType.PLAYER_INVENTORY);
-          }
-          break;
-        case LEFT_CLICK_AIR:
-          log.info("Left click air.");
-          break;
-        case LEFT_CLICK_BLOCK:
-          log.info("Left click block.");
-          break;
-    	}
+  }
 
-    	if ( event.hasBlock() ) {
-    	  log.info("The block was a " + block.getType().toString());
-    	}
-    	
-    }
-
-    @Override
-    public void onPlayerInteractEntity( PlayerInteractEntityEvent event ) {
-    	log.info("process onPlayerInteractEntity");
-    }
-    
 }

@@ -12,7 +12,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 public class ActivatorPad extends GenericCubeCustomBlock {
 
   public ActivatorPad( Plugin plugin ) {
-    super(plugin, "ActivatorPad", "http://metallis.fivepoints.st/textures/activator_pad.png", 16);
+    super(plugin, "ActivatorPad", "http://i.imgur.com/bg8LO.png", 16);
   }
 
   public void onNeighborBlockChange(World world, int x, int y, int z, int changedId) { }

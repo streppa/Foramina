@@ -22,16 +22,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
-import org.getspout.spoutapi.material.CustomBlock;
-
-import java.util.logging.Logger;
 
 public class ForaminaCommandExecutor implements CommandExecutor {
 
     private Foramina plugin;
-    public static CustomBlock activatorPad;
-
-    Logger log = Logger.getLogger("Minecraft");//Define your logger
 
     public ForaminaCommandExecutor(Foramina plugin) {
         this.plugin = plugin;
@@ -40,7 +34,8 @@ public class ForaminaCommandExecutor implements CommandExecutor {
     @Override
     public boolean onCommand( CommandSender sender, Command command, String label, String[] args ) {
         String commandName = command.getName().toLowerCase(); // Only Players
-        log.info("The command '" + commandName + "' was attempted.");
+
+        this.plugin.log.info("The command '" + commandName + "' was attempted.");
         
         if  ( ! (sender instanceof Player) ) {
             sender.sendMessage("/" + commandName + " can only be run from in game.");
@@ -49,7 +44,7 @@ public class ForaminaCommandExecutor implements CommandExecutor {
 
         if  ( commandName.equals("foramina") ) {
             Player player = (Player) sender;
-            player.getInventory().addItem(new SpoutItemStack(activatorPad, 1));
+            player.getInventory().addItem(new SpoutItemStack(new ActivatorPad(this.plugin), 1));
             return true;
         }
         

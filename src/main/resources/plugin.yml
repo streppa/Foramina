@@ -5,6 +5,6 @@ version: 0.1
 depend: [Spout]
 
 commands:
-   command:
-      description: A Command
-      usage: /<command> 
+   foramina:
+      description: The plugins main command
+      usage: /foramina 

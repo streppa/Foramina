@@ -19,14 +19,9 @@ package st.fivepoints.foramina;
  */
 
 import org.bukkit.Location;
-// import org.bukkit.entity.Player;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.getspout.spoutapi.inventory.SpoutItemStack;
 import org.getspout.spoutapi.material.CustomBlock;
 
 // import java.util.HashMap;
@@ -36,7 +31,8 @@ public class Foramina extends JavaPlugin {
 
   public static CustomBlock activatorPad;
   
-  private final ForaminaPlayerListener playerListener = new ForaminaPlayerListener(this);
+  private final ForaminaCommandExecutor  commandExecutor = new ForaminaCommandExecutor(this);
+  private final ForaminaPlayerListener                  playerListener = new ForaminaPlayerListener(this);
 
   public Location playerLoc;
   Logger log = Logger.getLogger("Minecraft");
@@ -51,28 +47,12 @@ public class Foramina extends JavaPlugin {
 
     PluginManager pm = this.getServer().getPluginManager();
 
-    pm.registerEvent(Event.Type.PLAYER_INTERACT_ENTITY, playerListener, Event.Priority.Normal, this);
+    getCommand("foramina").setExecutor(commandExecutor);
+    
+    pm.registerEvent(Event.Type.PLAYER_MOVE, playerListener, Event.Priority.Normal, this);
     pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Event.Priority.Normal, this);
 
     activatorPad = new ActivatorPad(this);
   }
-  
-  
-  @Override
-  public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-    String commandName = command.getName().toLowerCase(); // Only Players
-    log.info("The command '" + commandName + "' was attempted.");
-    if (!(sender instanceof Player)) {
-        sender.sendMessage("/" + commandName + " can only be run from in game.");
-        return true;
-    }
 
-    if (commandName.equals("foramina")) {
-        Player player = (Player) sender;
-
-        player.getInventory().addItem(new SpoutItemStack(activatorPad, 1));
-        return true;
-    }
-    return false;
-  }
 }
