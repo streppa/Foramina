@@ -57,9 +57,11 @@ public class Foramina extends JavaPlugin {
     activatorPad = new ActivatorPad(this);
   }
   
-  @Override public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+  
+  @Override
+  public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     String commandName = command.getName().toLowerCase(); // Only Players
-
+    log.info("The command '" + commandName + "' was attempted.");
     if (!(sender instanceof Player)) {
         sender.sendMessage("/" + commandName + " can only be run from in game.");
         return true;
