@@ -29,10 +29,12 @@ import java.util.logging.Logger;
 
 public class Foramina extends JavaPlugin {
 
-  public static CustomBlock activatorPad;
+  public static CustomBlock scaena;
+  public static ForaminaScaenaScheduler foraminaScaenaScheduler;
   
-  private final ForaminaCommandExecutor  commandExecutor = new ForaminaCommandExecutor(this);
-  private final ForaminaPlayerListener                  playerListener = new ForaminaPlayerListener(this);
+  private final ForaminaCommandExecutor commandExecutor = new ForaminaCommandExecutor(this);
+  private final ForaminaPlayerListener   playerListener = new ForaminaPlayerListener(this);
+  private final ForaminaBlockListener    blockListener  = new ForaminaBlockListener(this);                
 
   public Location playerLoc;
   Logger log = Logger.getLogger("Minecraft");
@@ -49,10 +51,12 @@ public class Foramina extends JavaPlugin {
 
     getCommand("foramina").setExecutor(commandExecutor);
     
-    pm.registerEvent(Event.Type.PLAYER_MOVE, playerListener, Event.Priority.Normal, this);
-    pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Event.Priority.Normal, this);
+    // pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Event.Priority.Normal, this);
+    // pm.registerEvent(Event.Type.BLOCK_PLACE, blockListener, Event.Priority.Normal, this);
 
-    activatorPad = new ActivatorPad(this);
+    scaena = new ForaminaScaena(this);
+    
+    // foraminaScaenaScheduler = new ForaminaScaenaScheduler(this);
   }
 
 }

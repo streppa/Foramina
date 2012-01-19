@@ -44,7 +44,7 @@ public class ForaminaCommandExecutor implements CommandExecutor {
 
         if  ( commandName.equals("foramina") ) {
             Player player = (Player) sender;
-            player.getInventory().addItem(new SpoutItemStack(new ActivatorPad(this.plugin), 1));
+            player.getInventory().addItem(new SpoutItemStack(new ForaminaScaena(this.plugin), Integer.parseInt(args[0])));
             return true;
         }
         
