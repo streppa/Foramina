@@ -1,3 +1,5 @@
+package st.fivepoints.foramina;
+
 import java.io.Serializable;
 
 
