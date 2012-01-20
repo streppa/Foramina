@@ -1,11 +1,10 @@
 package st.fivepoints.foramina;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.block.BlockFace;
 import org.bukkit.plugin.Plugin;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
@@ -36,7 +35,13 @@ public class ForaminaScaenaScheduler implements Runnable {
   
   @Override
   public void run() {
-    this.player.teleport(this.location.clone().add(10, 1, 10));
+    SpoutBlock playerBlock = (SpoutBlock) this.player.getLocation().getBlock();
+    SpoutBlock blockUnderFoot = playerBlock.getRelative(BlockFace.DOWN);
+    if ( blockUnderFoot.getLocation().equals(this.location) ) {
+      if ( blockUnderFoot.isCustomBlock() && blockUnderFoot.getCustomBlock() == this.block ) {
+        this.player.teleport(this.location.clone().add(10, 1, 10));
+      }
+    }
   }
 
 }

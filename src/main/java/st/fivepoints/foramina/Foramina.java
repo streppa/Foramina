@@ -18,13 +18,16 @@ package st.fivepoints.foramina;
  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.getspout.spoutapi.material.CustomBlock;
 
 // import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class Foramina extends JavaPlugin {
@@ -41,22 +44,31 @@ public class Foramina extends JavaPlugin {
 
 
   public void onDisable() {
-    log.info("Disabled message here, shown in console on startup");
+    log.info(this.toString() + "disabled.");
   }
 
   public void onEnable() {
-    log.info("Enabling Foramina Plugin");
+    log.info("Enabling " + this.toString( ));
 
     PluginManager pm = this.getServer().getPluginManager();
 
     getCommand("foramina").setExecutor(commandExecutor);
     
     // pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Event.Priority.Normal, this);
-    // pm.registerEvent(Event.Type.BLOCK_PLACE, blockListener, Event.Priority.Normal, this);
+    pm.registerEvent(Event.Type.BLOCK_PLACE, blockListener, Event.Priority.Normal, this);
+    // pm.registerEvent(Event.Type.BLOCK_CANBUILD, blockListener, Event.Priority.Normal, this);
 
     scaena = new ForaminaScaena(this);
+    log.info("Worlds:");
+    List<World> worlds = Bukkit.getWorlds();
+    for ( World world : worlds ) {
+      log.info(world.getName() + " [" + world.getUID() + "]");
+    }
     
     // foraminaScaenaScheduler = new ForaminaScaenaScheduler(this);
+    
+    this.getConfig().options().copyDefaults(true);
+    saveConfig();
   }
 
 }

@@ -23,7 +23,7 @@ import org.getspout.spoutapi.material.block.GenericCubeCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 
-public class ForaminaScaena extends GenericCubeCustomBlock implements ContainerBlock {
+public class ForaminaScaena extends GenericCubeCustomBlock {
 
   Logger log = Logger.getLogger("Minecraft");
 
@@ -47,7 +47,6 @@ public class ForaminaScaena extends GenericCubeCustomBlock implements ContainerB
     Location location = new Location(world, x, y, z);
     if ( this.inventories.containsKey(location) ) {
       ItemStack[] stacks = this.inventories.get(location).getContents();
-      log.info("  Stacks: " + stacks.toString());
       for ( ItemStack stack : stacks ) {
         if ( stack == null ) continue;
         world.dropItem(location, stack);
@@ -59,15 +58,17 @@ public class ForaminaScaena extends GenericCubeCustomBlock implements ContainerB
   public boolean onBlockInteract(World world, int x, int y, int z, SpoutPlayer player) {
     log.info("onBlockInteract");
     Location location = new Location(world, x, y, z);
+    
     if ( ! this.inventories.containsKey(location) ) {
-      log.info("  This block didn't have an inventory. Creating it.");
       this.inventories.put(location, SpoutManager.getInventoryBuilder().construct(9, "Scaena"));
     }
+    
     player.openInventoryWindow(this.inventories.get(location));
-    return false;
+    return true;
   }
 
   public void onEntityMoveAt(World world, int x, int y, int z, Entity entity) {
+    log.info("onEntityMoveAt");
     if ( entity instanceof Player ) {
       Location loc = new Location(world, x, y, z);
       new ForaminaScaenaScheduler(this.plugin, SpoutManager.getPlayer((Player) entity), this, loc, 1);
@@ -86,10 +87,4 @@ public class ForaminaScaena extends GenericCubeCustomBlock implements ContainerB
       return false;
   }
 
-  @Override
-  public Inventory getInventory() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-  
 }

@@ -38,16 +38,16 @@ public class ForaminaPlayerListener extends PlayerListener {
 
   @Override
   public void onPlayerInteract( PlayerInteractEvent event ) {
-  	Action       action = event.getAction();
-  	SpoutBlock   sblock = (SpoutBlock) event.getClickedBlock();
-  	Player       player = event.getPlayer();
-   	SpoutPlayer splayer = SpoutManager.getPlayer(player);
+    /*this.plugin.log.info("onPlayerInteract");
+   
+  	Action      action = event.getAction();
+  	SpoutBlock   block = (SpoutBlock) event.getClickedBlock();
+   	SpoutPlayer player = SpoutManager.getPlayer(event.getPlayer());
    	
-   	if ( action == Action.RIGHT_CLICK_BLOCK && sblock.isCustomBlock() && sblock.getCustomBlock() instanceof ForaminaScaena ) {
-   	  
-   	  this.plugin.log.info(splayer.getDisplayName() + " right-clicked on an Activator Pad. [" + sblock.toString() + "]");
-   	  // event.setCancelled(true);
-   	}
+   	if ( action == Action.RIGHT_CLICK_BLOCK && block.isCustomBlock() && block.getCustomBlock() instanceof ForaminaScaena ) {
+   	  event.useInteractedBlock();
+      event.setCancelled(true);
+   	}*/
   }
 
 }
