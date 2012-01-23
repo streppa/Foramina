@@ -1,5 +1,6 @@
 package st.fivepoints.foramina;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -27,13 +28,14 @@ public class ForaminaScaena extends GenericCubeCustomBlock {
 
   Logger log = Logger.getLogger("Minecraft");
 
-  private Map<Location, Inventory> inventories = new HashMap<Location, Inventory>();
+  private Map<Location, Inventory> inventories;
   
   private Foramina plugin;
   
   public ForaminaScaena( Foramina plugin ) {
     super(plugin, "Scaena", "http://i.imgur.com/bg8LO.png", 16);
     this.plugin = plugin;
+    this.inventories = ForaminaInventory.load();
   }
 
   public void onNeighborBlockChange(World world, int x, int y, int z, int changedId) { }
@@ -60,6 +62,7 @@ public class ForaminaScaena extends GenericCubeCustomBlock {
     Location location = new Location(world, x, y, z);
     
     if ( ! this.inventories.containsKey(location) ) {
+      log.info("Created new inventory at " + location.toString());
       this.inventories.put(location, SpoutManager.getInventoryBuilder().construct(9, "Scaena"));
     }
     
@@ -87,4 +90,7 @@ public class ForaminaScaena extends GenericCubeCustomBlock {
       return false;
   }
 
+  public void close() {
+    ForaminaInventory.save(this.inventories);
+  }
 }

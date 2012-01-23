@@ -1,3 +1,5 @@
 # Configuration file for the Foramina plugin.
 
+
+sqlite_file: foramina
 exclude_colors:

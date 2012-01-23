@@ -27,13 +27,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.getspout.spoutapi.material.CustomBlock;
 
 // import java.util.HashMap;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
 public class Foramina extends JavaPlugin {
 
-  public static CustomBlock scaena;
+  public static ForaminaScaena scaena;
   public static ForaminaScaenaScheduler foraminaScaenaScheduler;
+  public static ForaminaPersistence db;
   
   private final ForaminaCommandExecutor commandExecutor = new ForaminaCommandExecutor(this);
   private final ForaminaPlayerListener   playerListener = new ForaminaPlayerListener(this);
@@ -44,6 +46,8 @@ public class Foramina extends JavaPlugin {
 
 
   public void onDisable() {
+    scaena.close();
+    this.db.disconnect();
     log.info(this.toString() + "disabled.");
   }
 
@@ -58,17 +62,14 @@ public class Foramina extends JavaPlugin {
     pm.registerEvent(Event.Type.BLOCK_PLACE, blockListener, Event.Priority.Normal, this);
     // pm.registerEvent(Event.Type.BLOCK_CANBUILD, blockListener, Event.Priority.Normal, this);
 
-    scaena = new ForaminaScaena(this);
-    log.info("Worlds:");
-    List<World> worlds = Bukkit.getWorlds();
-    for ( World world : worlds ) {
-      log.info(world.getName() + " [" + world.getUID() + "]");
-    }
-    
     // foraminaScaenaScheduler = new ForaminaScaenaScheduler(this);
     
     this.getConfig().options().copyDefaults(true);
     saveConfig();
+    
+    db = new ForaminaPersistence(this, "foramina");
+    scaena = new ForaminaScaena(this);
+    
   }
 
 }
