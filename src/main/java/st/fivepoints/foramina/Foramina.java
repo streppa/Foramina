@@ -42,17 +42,20 @@ public class Foramina extends JavaPlugin {
   private final ForaminaBlockListener    blockListener  = new ForaminaBlockListener(this);                
 
   public Location playerLoc;
-  Logger log = Logger.getLogger("Minecraft");
-
+  public Logger log = Logger.getLogger("Foramina");
 
   public void onDisable() {
     scaena.close();
-    this.db.disconnect();
-    log.info(this.toString() + "disabled.");
+    Foramina.db.disconnect();
+    log.info("[" + this.getDescription().getName() +"] Plugin disabled.");
   }
 
+  public void onLoad() {
+    log.info(this.toString());
+  }
+  
   public void onEnable() {
-    log.info("Enabling " + this.toString( ));
+    log.info("[" + this.getDescription().getName() +"] Plugin enabled.");
 
     PluginManager pm = this.getServer().getPluginManager();
 
@@ -67,7 +70,7 @@ public class Foramina extends JavaPlugin {
     this.getConfig().options().copyDefaults(true);
     saveConfig();
     
-    db = new ForaminaPersistence(this, "foramina");
+    Foramina.db = new ForaminaPersistence(this, "foramina");
     scaena = new ForaminaScaena(this);
     
   }

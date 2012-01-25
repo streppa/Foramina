@@ -25,18 +25,15 @@ public class ForaminaInventory {
   
   public static Map<Location, Inventory> load() {
     Map<Location, Inventory> inventories = new HashMap<Location, Inventory>();
-
     try {
       ResultSet rs = Foramina.db.query("SELECT * FROM inventories");
       while ( rs.next() ) {
-        log.info("Looping through inventories.");
-        SpoutWorld world = Spout.getServer().getWorld( UUID.fromString(rs.getString("world_uid")) );
+        World world = Bukkit.getServer().getWorld( UUID.fromString(rs.getString("world_uid")) );
         if ( world == null ) continue;
         Location location = new Location(world, rs.getDouble("x"), rs.getDouble("y"), rs.getDouble("z"));
-        SpoutBlock block = world.getBlockAt(location);
+        SpoutBlock block = (SpoutBlock) world.getBlockAt(location);
         if ( ! (block.isCustomBlock() && block.getBlockType() instanceof ForaminaScaena) ) continue;
-        SpoutItemStack stack = null;
-        if ( rs.getInt("type_id") != 0 ) stack = new SpoutItemStack(rs.getInt("type_id"), rs.getInt("quantity"), rs.getShort("durability"));
+        SpoutItemStack stack = new SpoutItemStack(rs.getInt("type_id"), rs.getInt("quantity"), rs.getShort("durability"));
         if ( inventories.containsKey(location) ) {
           Inventory inventory = inventories.get(location);
           inventory.setItem(rs.getInt("slot"), stack);
@@ -64,17 +61,14 @@ public class ForaminaInventory {
       double x = location.getX();
       double y = location.getY();
       double z = location.getZ();
-      int slot = 0;
+      int slot = -1;
       for ( ItemStack stack : stacks ) {
+        slot++;
         String sql = "";
-        if ( stack == null ) {
-          sql = "INSERT INTO inventories (world_uid, x, y, z, slot) VALUES (\"" + world_uid + "\", " + x + ", " + y + ", " + z + ", " + slot + ")";
-        } else {
-          sql = "INSERT INTO inventories (world_uid, x, y, z, slot, type_id, quantity, durability) VALUES (\"" + world_uid + "\", " + x + ", " + y + ", " + z + ", " + slot + ", " + stack.getTypeId() + ", " + stack.getAmount() + ", " + stack.getDurability() + ")";
-        }
+        if ( stack == null ) continue;
+        sql = "INSERT INTO inventories (world_uid, x, y, z, slot, type_id, quantity, durability) VALUES (\"" + world_uid + "\", " + x + ", " + y + ", " + z + ", " + slot + ", " + stack.getTypeId() + ", " + stack.getAmount() + ", " + stack.getDurability() + ")";
         log.info(sql);
         Foramina.db.execute(sql);
-        slot++;
       }
     }
     //Foramina.db.execute("COMMIT");

@@ -39,7 +39,7 @@ public class ForaminaScaenaScheduler implements Runnable {
     SpoutBlock blockUnderFoot = playerBlock.getRelative(BlockFace.DOWN);
     if ( blockUnderFoot.getLocation().equals(this.location) ) {
       if ( blockUnderFoot.isCustomBlock() && blockUnderFoot.getCustomBlock() == this.block ) {
-        this.player.teleport(this.location.clone().add(10, 1, 10));
+        this.block.onTeleport(this.location, player);
       }
     }
   }
