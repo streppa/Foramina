@@ -1,4 +1,3 @@
-
 package st.fivepoints.foramina;
 
 /*
@@ -18,52 +17,49 @@ package st.fivepoints.foramina;
  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.event.Event;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.getspout.spoutapi.material.CustomBlock;
 
-// import java.util.HashMap;
-import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Logger;
 
 public class Foramina extends JavaPlugin {
+
+  public static Foramina instance;
+  public static String label = "[Foramina]";
+  public static Logger log = Logger.getLogger("Foramina");
 
   public static ForaminaScaena scaena;
   public static ForaminaScaenaScheduler foraminaScaenaScheduler;
   public static ForaminaPersistence db;
   
-  private final ForaminaCommandExecutor commandExecutor = new ForaminaCommandExecutor(this);
-  private final ForaminaPlayerListener   playerListener = new ForaminaPlayerListener(this);
-  private final ForaminaBlockListener    blockListener  = new ForaminaBlockListener(this);                
+  private final ForaminaCommandExecutor commandExecutor = new ForaminaCommandExecutor();
+  
+  @SuppressWarnings("unused")
+  private ForaminaListener listener;
 
-  public Location playerLoc;
-  public Logger log = Logger.getLogger("Foramina");
-
+  public Foramina() {
+    Foramina.instance = this;
+  }
+  
+  public static void log(String msg) {
+    log.info(label + " " + msg);
+  }
+  
   public void onDisable() {
     scaena.close();
     Foramina.db.disconnect();
-    log.info("[" + this.getDescription().getName() +"] Plugin disabled.");
+    log("Plugin disabled.");
   }
 
   public void onLoad() {
-    log.info(this.toString());
+    log(this.toString());
   }
   
   public void onEnable() {
-    log.info("[" + this.getDescription().getName() +"] Plugin enabled.");
-
-    PluginManager pm = this.getServer().getPluginManager();
+    log("Plugin enabled.");
 
     getCommand("foramina").setExecutor(commandExecutor);
     
-    // pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Event.Priority.Normal, this);
-    pm.registerEvent(Event.Type.BLOCK_PLACE, blockListener, Event.Priority.Normal, this);
-    // pm.registerEvent(Event.Type.BLOCK_CANBUILD, blockListener, Event.Priority.Normal, this);
+    this.listener = new ForaminaListener();
 
     // foraminaScaenaScheduler = new ForaminaScaenaScheduler(this);
     
@@ -71,7 +67,7 @@ public class Foramina extends JavaPlugin {
     saveConfig();
     
     Foramina.db = new ForaminaPersistence(this, "foramina");
-    scaena = new ForaminaScaena(this);
+    scaena = new ForaminaScaena();
     
   }
 

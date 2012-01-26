@@ -5,23 +5,57 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.getspout.spoutapi.Spout;
 import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.SpoutServer;
-import org.getspout.spoutapi.SpoutWorld;
 import org.getspout.spoutapi.block.SpoutBlock;
+import org.getspout.spoutapi.gui.GenericContainer;
+import org.getspout.spoutapi.gui.GenericItemWidget;
+import org.getspout.spoutapi.gui.GenericPopup;
 import org.getspout.spoutapi.inventory.SpoutItemStack;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
-public class ForaminaInventory {
+import st.fivepoints.foramina.gui.SlotContainer;
+import st.fivepoints.foramina.gui.SlotWidget;
+
+public class ForaminaInventory extends Location implements Inventory {
   
-  static Logger log = Logger.getLogger("Minecraft");
+  private static Map<Location, Inventory> inventories = new HashMap<Location, Inventory>();
+  
+  private GenericPopup popup;
+  private GenericContainer slots;
+  private Location location;
+  private Inventory inventory;
+  private int availableSlots = 3;
+  
+  private ForaminaInventory(World world, double x, double y, double z) {
+    super(world, x, y, z);
+  }
+  
+  public void inventoryPopup(Location location, SpoutPlayer player) {
+    this.popup = new GenericPopup();
+    this.slots = new SlotContainer();
+    for ( int i = 0; i < this.availableSlots; i++ ) {
+      this.slots.addChild(new SlotWidget(i));
+    }
+    
+  }
+  
+  public static boolean hasInventory(Location location) {
+    return inventories.containsKey(location);
+    
+  }
+  
+  public static Inventory getInventory(Location location) {
+    
+    
+    return inventories.get(location);
+  }
   
   public static Map<Location, Inventory> load() {
     Map<Location, Inventory> inventories = new HashMap<Location, Inventory>();
@@ -67,11 +101,141 @@ public class ForaminaInventory {
         String sql = "";
         if ( stack == null ) continue;
         sql = "INSERT INTO inventories (world_uid, x, y, z, slot, type_id, quantity, durability) VALUES (\"" + world_uid + "\", " + x + ", " + y + ", " + z + ", " + slot + ", " + stack.getTypeId() + ", " + stack.getAmount() + ", " + stack.getDurability() + ")";
-        log.info(sql);
+        Foramina.log(sql);
         Foramina.db.execute(sql);
       }
     }
     //Foramina.db.execute("COMMIT");
+    
+  }
+
+  public HashMap<Integer, ItemStack> addItem(ItemStack... arg0) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public HashMap<Integer, ? extends ItemStack> all(int arg0) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public HashMap<Integer, ? extends ItemStack> all(Material arg0) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public HashMap<Integer, ? extends ItemStack> all(ItemStack arg0) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public void clear() {
+    // TODO Auto-generated method stub
+    
+  }
+
+  public void clear(int arg0) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  public boolean contains(int arg0) {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  public boolean contains(Material arg0) {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  public boolean contains(ItemStack arg0) {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  public boolean contains(int arg0, int arg1) {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  public boolean contains(Material arg0, int arg1) {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  public boolean contains(ItemStack arg0, int arg1) {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  public int first(int arg0) {
+    // TODO Auto-generated method stub
+    return 0;
+  }
+
+  public int first(Material arg0) {
+    // TODO Auto-generated method stub
+    return 0;
+  }
+
+  public int first(ItemStack arg0) {
+    // TODO Auto-generated method stub
+    return 0;
+  }
+
+  public int firstEmpty() {
+    // TODO Auto-generated method stub
+    return 0;
+  }
+
+  public ItemStack[] getContents() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public ItemStack getItem(int arg0) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public String getName() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public int getSize() {
+    // TODO Auto-generated method stub
+    return 0;
+  }
+
+  public void remove(int arg0) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  public void remove(Material arg0) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  public void remove(ItemStack arg0) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  public HashMap<Integer, ItemStack> removeItem(ItemStack... arg0) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public void setContents(ItemStack[] arg0) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  public void setItem(int arg0, ItemStack arg1) {
+    // TODO Auto-generated method stub
     
   }
 }

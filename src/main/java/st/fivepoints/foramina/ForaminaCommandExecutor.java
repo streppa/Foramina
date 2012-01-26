@@ -25,17 +25,10 @@ import org.getspout.spoutapi.inventory.SpoutItemStack;
 
 public class ForaminaCommandExecutor implements CommandExecutor {
 
-    private Foramina plugin;
-
-    public ForaminaCommandExecutor(Foramina plugin) {
-        this.plugin = plugin;
-    }
-
-    @Override
     public boolean onCommand( CommandSender sender, Command command, String label, String[] args ) {
         String commandName = command.getName().toLowerCase(); // Only Players
 
-        this.plugin.log.info("The command '" + commandName + "' was attempted.");
+        Foramina.log("The command '" + commandName + "' was attempted.");
         
         if  ( ! (sender instanceof Player) ) {
             sender.sendMessage("/" + commandName + " can only be run from in game.");
