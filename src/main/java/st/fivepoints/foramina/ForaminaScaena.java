@@ -16,14 +16,13 @@ import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.material.block.GenericCubeCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
+import st.fivepoints.foramina.gui.Composer;
+
 
 public class ForaminaScaena extends GenericCubeCustomBlock {
 
-  private Map<Location, Inventory> inventories;
-  
   public ForaminaScaena() {
     super(Foramina.instance, "Scaena", "http://i.imgur.com/bg8LO.png", 16);
-    this.inventories = ForaminaInventory.load();
   }
 
   public void onNeighborBlockChange(World world, int x, int y, int z, int changedId) { }
@@ -34,28 +33,37 @@ public class ForaminaScaena extends GenericCubeCustomBlock {
 
   public void onBlockDestroyed(World world, int x, int y, int z) { 
     Foramina.log("onBlockDestroyed");
-    Location location = new Location(world, x, y, z);
-    if ( this.inventories.containsKey(location) ) {
-      ItemStack[] stacks = this.inventories.get(location).getContents();
-      for ( ItemStack stack : stacks ) {
+
+    ForaminaManifest manifest = ForaminaManifest.findManifest(world, x, y, z);
+    
+    if ( manifest != null ) {
+      for ( ItemStack stack : manifest.getInventory().getContents() ) {
         if ( stack == null ) continue;
-        world.dropItem(location, stack);
+        world.dropItem(manifest.getLocation(), stack);
       }
-      this.inventories.remove(location);
+      
+      ForaminaManifest.removeManifest(manifest);
     }
+
   }
 
   public boolean onBlockInteract(World world, int x, int y, int z, SpoutPlayer player) {
     Foramina.log("onBlockInteract");
-    Location location = new Location(world, x, y, z);
-    Foramina.log("  location: " + location.toString());
-    if ( ! this.inventories.containsKey(location) ) {
-      Foramina.log("  created new inventory at " + location.toString());
-      this.inventories.put(location, SpoutManager.getInventoryBuilder().construct(9, "Scaena"));
+    
+    if ( player.getMainScreen().getActivePopup() instanceof Composer ) {
+      
+    } else {
+      player.getMainScreen().attachPopupScreen(new Composer(player));
+    }
+    /*  
+    ForaminaManifest manifest = ForaminaManifest.findManifest(world, x, y, z);
+
+    if ( manifest == null ) {
+      manifest = new ForaminaManifest(world, x, y, z);
     }
     
-    player.openInventoryWindow(this.inventories.get(location));
-    Foramina.log("  After the ivnentory window open.");
+    manifest.showManifest(player);
+    */
     return true;
   }
 
@@ -81,44 +89,18 @@ public class ForaminaScaena extends GenericCubeCustomBlock {
 
   public void onTeleport(Location location, SpoutPlayer player) {
     Foramina.log("onTeleport");
-    Location destination = this.getDestination(location);
-    if ( destination == null ) {
-      Foramina.log("  Nowhere to go.");
-      return;
-    }
-    player.teleport(destination.add(0.5, 1, 0.5));
-  }
-  
-  private Location getDestination(Location source) {
-    Foramina.log("  getDestination");
+    ForaminaManifest manifest = ForaminaManifest.findManifest(location);
+
     Location destination = null;
-    if ( ! this.inventories.containsKey(source) ) return null;
-    ItemStack[] source_stacks = this.inventories.get(source).getContents();
-    Foramina.log("    source stacks: " + source_stacks.toString() + "(" + source_stacks.hashCode() + ")");
-    for (Map.Entry<Location, Inventory> entry : inventories.entrySet() ) {
-      Location location = entry.getKey();
-      Inventory inventory = entry.getValue();
-      ItemStack[] destination_stacks = inventory.getContents();
-      if ( ! inventory.contains(Material.WOOL)) continue; 
-      if ( source.equals(location) ) continue;
-      Foramina.log("      dest stacks: " + destination_stacks.toString() + "(" + destination_stacks.hashCode() + ")");
-      if ( source_stacks.length != destination_stacks.length ) continue;
-      boolean match = true;
-      for ( int i = 0; i < source_stacks.length; i++ ) {
-        if ( source_stacks[i] == null && destination_stacks[i] == null ) continue;
-        if ( source_stacks[i] == null ^  destination_stacks[i] == null ) { match = false; break; }
-        if ( ! source_stacks[i].equals(destination_stacks[i]) ) { match = false; break; }
-      }
-      if ( match ) {
-        Foramina.log("Found a match!");
-        destination = location.clone();
-        break;
+    
+    if ( manifest != null ) {
+      for ( ForaminaManifest targetManifest : ForaminaManifest.getManifests() ) {
+        if ( manifest.canLinkTo(targetManifest) ) destination = targetManifest.getLocation().clone();
       }
     }
-    return destination;
+    
+    if ( destination != null ) player.teleport(destination.add(0.5, 1, 0.5));
+
   }
   
-  public void close() {
-    ForaminaInventory.save(this.inventories);
-  }
 }

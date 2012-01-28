@@ -12,7 +12,7 @@ public class ForaminaListener implements Listener {
     Foramina.instance.getServer().getPluginManager().registerEvents(this, Foramina.instance);
   }
   
-  @EventHandler()
+  @EventHandler
   public void onBlockPlace( BlockPlaceEvent event ) {
     Foramina.log("onBlockPlace");
     SpoutBlock blockAgainst = (SpoutBlock) event.getBlockAgainst();

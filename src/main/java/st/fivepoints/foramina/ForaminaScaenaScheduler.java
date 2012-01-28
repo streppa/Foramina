@@ -1,7 +1,5 @@
 package st.fivepoints.foramina;
 
-import java.util.logging.Logger;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
@@ -15,8 +13,6 @@ public class ForaminaScaenaScheduler implements Runnable {
   private SpoutPlayer     player;
   private ForaminaScaena  block;
   private Location        location;
-  
-  Logger log = Logger.getLogger("Minecraft");
   
   public ForaminaScaenaScheduler( SpoutPlayer player, ForaminaScaena block, Location location, int delay ) {
     this.activationDelayInTicks   = delay * 20;

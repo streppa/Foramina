@@ -17,8 +17,13 @@ package st.fivepoints.foramina;
  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class Foramina extends JavaPlugin {
@@ -30,6 +35,8 @@ public class Foramina extends JavaPlugin {
   public static ForaminaScaena scaena;
   public static ForaminaScaenaScheduler foraminaScaenaScheduler;
   public static ForaminaPersistence db;
+  
+  public static List<ItemStack> componants = generateComponants();
   
   private final ForaminaCommandExecutor commandExecutor = new ForaminaCommandExecutor();
   
@@ -45,18 +52,16 @@ public class Foramina extends JavaPlugin {
   }
   
   public void onDisable() {
-    scaena.close();
+    ForaminaManifest.save();
     Foramina.db.disconnect();
     log("Plugin disabled.");
   }
 
-  public void onLoad() {
-    log(this.toString());
-  }
-  
   public void onEnable() {
     log("Plugin enabled.");
-
+    Foramina.db = new ForaminaPersistence("foramina");
+    ForaminaManifest.load();
+    
     getCommand("foramina").setExecutor(commandExecutor);
     
     this.listener = new ForaminaListener();
@@ -66,9 +71,20 @@ public class Foramina extends JavaPlugin {
     this.getConfig().options().copyDefaults(true);
     saveConfig();
     
-    Foramina.db = new ForaminaPersistence(this, "foramina");
     scaena = new ForaminaScaena();
     
   }
 
+  private static List<ItemStack> generateComponants() {
+    List<ItemStack> componants = new ArrayList<ItemStack>(16);
+    for ( byte i = 0; i < 16; i++ ) {
+      ItemStack stack = new MaterialData(Material.WOOL, i).toItemStack();
+      componants.add(stack);
+    }
+    return componants;
+  }
+  
+  public static List<ItemStack> getComponants() {
+    return componants;
+  }
 }
