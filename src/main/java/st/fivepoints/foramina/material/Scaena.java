@@ -1,27 +1,26 @@
-package st.fivepoints.foramina;
+package st.fivepoints.foramina.material;
 
-
-import java.util.Map;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.material.block.GenericCubeCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
+import st.fivepoints.foramina.Foramina;
+import st.fivepoints.foramina.ScaenaData;
+import st.fivepoints.foramina.ScaenaScheduler;
 import st.fivepoints.foramina.gui.Composer;
 
 
-public class ForaminaScaena extends GenericCubeCustomBlock {
+public class Scaena extends GenericCubeCustomBlock {
 
-  public ForaminaScaena() {
+  public Scaena() {
     super(Foramina.instance, "Scaena", "http://i.imgur.com/bg8LO.png", 16);
   }
 
@@ -34,36 +33,20 @@ public class ForaminaScaena extends GenericCubeCustomBlock {
   public void onBlockDestroyed(World world, int x, int y, int z) { 
     Foramina.log("onBlockDestroyed");
 
-    ForaminaManifest manifest = ForaminaManifest.findManifest(world, x, y, z);
-    
-    if ( manifest != null ) {
-      for ( ItemStack stack : manifest.getInventory().getContents() ) {
-        if ( stack == null ) continue;
-        world.dropItem(manifest.getLocation(), stack);
-      }
-      
-      ForaminaManifest.removeManifest(manifest);
-    }
-
+    ScaenaData scaena = ScaenaData.findScaena(world, x, y, z);
+    if ( scaena != null ) ScaenaData.removeScaena(scaena);
   }
 
   public boolean onBlockInteract(World world, int x, int y, int z, SpoutPlayer player) {
     Foramina.log("onBlockInteract");
     
-    if ( player.getMainScreen().getActivePopup() instanceof Composer ) {
-      
-    } else {
-      player.getMainScreen().attachPopupScreen(new Composer(player));
-    }
-    /*  
-    ForaminaManifest manifest = ForaminaManifest.findManifest(world, x, y, z);
-
-    if ( manifest == null ) {
-      manifest = new ForaminaManifest(world, x, y, z);
-    }
+    ScaenaData scaena = ScaenaData.findScaena(world, x, y, z);
+    if ( scaena == null ) scaena = new ScaenaData(world, x, y, z);
     
-    manifest.showManifest(player);
-    */
+    if ( ! (player.getMainScreen().getActivePopup() instanceof Composer) ) {
+      Foramina.log(" Loading Composer popup.");
+      player.getMainScreen().attachPopupScreen(new Composer(scaena, player));
+    }
     return true;
   }
 
@@ -71,7 +54,7 @@ public class ForaminaScaena extends GenericCubeCustomBlock {
     Foramina.log("onEntityMoveAt");
     if ( entity instanceof Player ) {
       Location loc = new Location(world, x, y, z);
-      new ForaminaScaenaScheduler(SpoutManager.getPlayer((Player) entity), this, loc, 1);
+      new ScaenaScheduler(SpoutManager.getPlayer((Player) entity), this, loc, 1);
     }
   }
 
@@ -89,12 +72,12 @@ public class ForaminaScaena extends GenericCubeCustomBlock {
 
   public void onTeleport(Location location, SpoutPlayer player) {
     Foramina.log("onTeleport");
-    ForaminaManifest manifest = ForaminaManifest.findManifest(location);
+    ScaenaData manifest = ScaenaData.findScaena(location);
 
     Location destination = null;
     
     if ( manifest != null ) {
-      for ( ForaminaManifest targetManifest : ForaminaManifest.getManifests() ) {
+      for ( ScaenaData targetManifest : ScaenaData.getScaenus() ) {
         if ( manifest.canLinkTo(targetManifest) ) destination = targetManifest.getLocation().clone();
       }
     }

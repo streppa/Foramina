@@ -22,6 +22,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import st.fivepoints.foramina.material.Scaena;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -32,8 +34,8 @@ public class Foramina extends JavaPlugin {
   public static String label = "[Foramina]";
   public static Logger log = Logger.getLogger("Foramina");
 
-  public static ForaminaScaena scaena;
-  public static ForaminaScaenaScheduler foraminaScaenaScheduler;
+  public static Scaena scaena;
+  public static ScaenaScheduler foraminaScaenaScheduler;
   public static ForaminaPersistence db;
   
   public static List<ItemStack> componants = generateComponants();
@@ -52,7 +54,7 @@ public class Foramina extends JavaPlugin {
   }
   
   public void onDisable() {
-    ForaminaManifest.save();
+    ScaenaData.save();
     Foramina.db.disconnect();
     log("Plugin disabled.");
   }
@@ -60,7 +62,7 @@ public class Foramina extends JavaPlugin {
   public void onEnable() {
     log("Plugin enabled.");
     Foramina.db = new ForaminaPersistence("foramina");
-    ForaminaManifest.load();
+    ScaenaData.load();
     
     getCommand("foramina").setExecutor(commandExecutor);
     
@@ -71,7 +73,7 @@ public class Foramina extends JavaPlugin {
     this.getConfig().options().copyDefaults(true);
     saveConfig();
     
-    scaena = new ForaminaScaena();
+    scaena = new Scaena();
     
   }
 

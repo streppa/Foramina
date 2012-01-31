@@ -6,6 +6,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.getspout.spoutapi.block.SpoutBlock;
 
+import st.fivepoints.foramina.material.Scaena;
+
 public class ForaminaListener implements Listener {
 
   public ForaminaListener() {
@@ -17,7 +19,7 @@ public class ForaminaListener implements Listener {
     Foramina.log("onBlockPlace");
     SpoutBlock blockAgainst = (SpoutBlock) event.getBlockAgainst();
     
-    if ( blockAgainst.isCustomBlock() && blockAgainst.getCustomBlock() instanceof ForaminaScaena ) {
+    if ( blockAgainst.isCustomBlock() && blockAgainst.getCustomBlock() instanceof Scaena ) {
       event.setBuild(false);
     }
   }

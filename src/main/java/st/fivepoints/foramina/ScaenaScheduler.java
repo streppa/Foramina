@@ -6,15 +6,17 @@ import org.bukkit.block.BlockFace;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-public class ForaminaScaenaScheduler implements Runnable {
+import st.fivepoints.foramina.material.Scaena;
+
+public class ScaenaScheduler implements Runnable {
 
   private int activationDelayInTicks;
   
-  private SpoutPlayer     player;
-  private ForaminaScaena  block;
-  private Location        location;
+  private SpoutPlayer player;
+  private Scaena      block;
+  private Location    location;
   
-  public ForaminaScaenaScheduler( SpoutPlayer player, ForaminaScaena block, Location location, int delay ) {
+  public ScaenaScheduler( SpoutPlayer player, Scaena block, Location location, int delay ) {
     this.activationDelayInTicks   = delay * 20;
     this.player = player;
     this.block  = block;
