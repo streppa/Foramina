@@ -5,16 +5,17 @@ import org.getspout.spoutapi.gui.GenericButton;
 import org.getspout.spoutapi.gui.RenderPriority;
 
 import st.fivepoints.foramina.Foramina;
-import st.fivepoints.foramina.gui.container.SlotWidgetContainer;
+import st.fivepoints.foramina.gui.container.SlotContainer;
 
 public class SlotButton extends GenericButton {
 
-  private SlotWidgetContainer slot;
+  SlotContainer slotContainer;
   
-  public SlotButton(String label, SlotWidgetContainer slot) {
+  public SlotButton(SlotContainer slotContainer, String label) {
     super(label);
+    this.slotContainer = slotContainer;
+    
     this.setPriority(RenderPriority.Low);
-    this.slot = slot;
 
     this.setHeight(32);
     this.setMaxHeight(32);
@@ -32,6 +33,16 @@ public class SlotButton extends GenericButton {
 
   public void onButtonClick(ButtonClickEvent event) {
     Foramina.log("onButtonClick");
-    slot.cycleGlyphs();
+    this.getSlotContainer().cycleGlyphs();
   }
+  
+  public void setSlotContainer(SlotContainer slotContainer) {
+    this.slotContainer = slotContainer;
+    this.setContainer(slotContainer);
+  }
+  
+  public SlotContainer getSlotContainer() {
+    return this.slotContainer;
+  }
+  
 }

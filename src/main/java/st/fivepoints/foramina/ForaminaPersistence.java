@@ -56,7 +56,7 @@ public class ForaminaPersistence {
     Foramina.log("Creating sqlite database.");
     this.execute("CREATE TABLE locations ( id integer primary key, world_uid text not null, x real not null, y real not null, z real not null)");
     this.execute("CREATE UNIQUE INDEX idx_locations on locations ( world_uid, x, y, z )");
-    this.execute("CREATE TABLE scaenus (location_id integer, slot integer, type_id integer, data integer)");
+    this.execute("CREATE TABLE scaenus (location_id integer, slot integer, glyph_index integer)");
     this.execute("CREATE UNIQUE INDEX idx_scaenus on scaenus ( location_id, slot )");
   }
   
@@ -90,16 +90,15 @@ public class ForaminaPersistence {
     return id;
   }
 
-  public void insertScaena(int location_id, int slot, int typeID, byte data ) {
-    String sql = "INSERT INTO scaenus (location_id, slot, type_id, data) VALUES (?, ?, ?, ?)";
+  public void insertScaena(int location_id, int slot, int glyphIndex ) {
+    String sql = "INSERT INTO scaenus (location_id, slot, glyph_index) VALUES (?, ?, ?)";
     PreparedStatement st = null;
 
     try {
       st = this.db.prepareStatement(sql);
       st.setInt  (1, location_id);
       st.setInt  (2, slot);
-      st.setInt  (3, typeID);
-      st.setByte (4, data);
+      st.setInt  (3, glyphIndex);
       
       int affectedRows = st.executeUpdate();
       if (affectedRows == 0) {

@@ -1,14 +1,10 @@
 package st.fivepoints.foramina.gui;
 
-import org.bukkit.ChatColor;
-import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.gui.ContainerType;
 import org.getspout.spoutapi.gui.GenericContainer;
 import org.getspout.spoutapi.gui.GenericGradient;
-import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.gui.GenericPopup;
-import org.getspout.spoutapi.gui.GenericTexture;
 import org.getspout.spoutapi.gui.RenderPriority;
 import org.getspout.spoutapi.gui.WidgetAnchor;
 import org.getspout.spoutapi.player.SpoutPlayer;
@@ -42,8 +38,8 @@ public class Composer extends GenericPopup {
     composer.setAnchor(WidgetAnchor.CENTER_CENTER);
     composer.setLayout(ContainerType.HORIZONTAL);
     
-    for ( ItemStack stack : scaena.getComponants() ) {
-      composer.addChild(new SlotContainer(stack, "Cycle"));
+    for ( int glyphIndex : scaena.getComponants() ) {
+      composer.addChild(new SlotContainer(glyphIndex, "Cycle"));
     }
     
     this.attachWidgets(Foramina.instance, background, composer);

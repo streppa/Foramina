@@ -32,7 +32,7 @@ public class ScaenaData {
   private static List<ScaenaData> scaenus = new ArrayList<ScaenaData>();
   private static int availableSlots = 3;
   
-  private List<ItemStack> componants = new ArrayList<ItemStack>(ScaenaData.availableSlots);
+  private List<Integer> componants = new ArrayList<Integer>(ScaenaData.availableSlots);
   private Location location;
   
   public static List<ScaenaData> getScaenus() {
@@ -59,7 +59,7 @@ public class ScaenaData {
   public ScaenaData(Location location) {
     this.location = location;
     for ( int i = 0; i < ScaenaData.availableSlots; i++ ) {
-      this.componants.add(new MaterialData(Material.WOOL, (byte) 0).toItemStack());
+      this.componants.add(0);
     }
     ScaenaData.getScaenus().add(this);
   }
@@ -72,22 +72,14 @@ public class ScaenaData {
     return this.location;
   }
 
-  public List<ItemStack> getComponants() {
+  public List<Integer> getComponants() {
     return this.componants; 
   }
 
   public boolean canLinkTo(ScaenaData scaena) {
     if ( this.equals(scaena) ) return false;
-    if ( this.hasEmptySlots() || scaena.hasEmptySlots() ) return false;
     if ( ! this.matches(scaena) ) return false;
     return true;
-  }
-  
-  public boolean hasEmptySlots() {
-    for ( ItemStack stack : this.getComponants() ) {
-      if ( stack == null ) return true;
-    }
-    return false;
   }
   
   public boolean matches(ScaenaData scaena) {
@@ -114,17 +106,14 @@ public class ScaenaData {
         SpoutBlock block = (SpoutBlock) world.getBlockAt(location);
         if ( ! (block.isCustomBlock() && block.getBlockType() instanceof Scaena) ) continue;
 
-        ScaenaData manifest = ScaenaData.findScaena(location);
-        if ( manifest == null ) manifest = new ScaenaData(location);
+        ScaenaData scaena = ScaenaData.findScaena(location);
+        if ( scaena == null ) scaena = new ScaenaData(location);
         
-        ResultSet rs_scaena = Foramina.db.query("SELECT * FROM manifests WHERE location_id = " + rs_locations.getInt("id") + " ORDER BY slot ASC");
+        ResultSet rs_scaena = Foramina.db.query("SELECT * FROM scaenus WHERE location_id = " + rs_locations.getInt("id") + " ORDER BY slot ASC");
         while ( rs_scaena.next() ) {
           int   slot       = rs_scaena.getInt("slot");
-          int   typeID     = rs_scaena.getInt("type_id");
-          int   quantity   = 1;
-          short durability = 1;
-          byte  data       = rs_scaena.getByte("data");
-          manifest.getComponants().add(slot, new ItemStack(typeID, quantity, durability, data));
+          int   glyphIndex = rs_scaena.getInt("glyph_index");
+          scaena.getComponants().add(slot, glyphIndex);
         }
         rs_scaena.close();
       }
@@ -146,9 +135,7 @@ public class ScaenaData {
       double z = scaena.getLocation().getZ();
       int location_id = Foramina.db.insertLocation(world_uid, x, y, z);
       for ( int slot = 0; slot < ScaenaData.availableSlots; slot++ ) {
-        ItemStack stack = scaena.getComponants().get(slot);
-        if ( stack == null ) continue;
-        Foramina.db.insertScaena(location_id, slot, stack.getTypeId(), stack.getData().getData());
+        Foramina.db.insertScaena(location_id, slot, scaena.getComponants().get(slot));
       }
     }
   }
