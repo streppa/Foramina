@@ -17,12 +17,12 @@ public class SlotButton extends GenericButton {
     
     this.setPriority(RenderPriority.Low);
 
-    this.setHeight(32);
-    this.setMaxHeight(32);
-    this.setMinHeight(32);
+    this.setHeight(16);
+    this.setMaxHeight(16);
+    this.setMinHeight(16);
 
-    this.setWidth(64);
-    this.setMaxWidth(64);
+    this.setWidth(32);
+    this.setMaxWidth(32);
     this.setMinWidth(32);
     
     //this.setX(0);
@@ -31,9 +31,9 @@ public class SlotButton extends GenericButton {
 
   }
 
-  public void onButtonClick(ButtonClickEvent event) {
+  public void onButtonClick(ButtonClickEvent event, boolean isForward) {
     Foramina.log("onButtonClick");
-    this.getSlotContainer().cycleGlyphs();
+    this.getSlotContainer().cycleSlots(isForward);
   }
   
   public void setSlotContainer(SlotContainer slotContainer) {

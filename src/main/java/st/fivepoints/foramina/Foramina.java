@@ -38,7 +38,7 @@ public class Foramina extends JavaPlugin {
   public static ScaenaScheduler foraminaScaenaScheduler;
   public static ForaminaPersistence db;
   
-  public static List<ItemStack> componants = generateComponants();
+  public static List<ForaminaGlyph> availableGlyphs = initializeGlyphs();
   
   private final ForaminaCommandExecutor commandExecutor = new ForaminaCommandExecutor();
   
@@ -61,6 +61,7 @@ public class Foramina extends JavaPlugin {
 
   public void onEnable() {
     log("Plugin enabled.");
+    scaena = new Scaena();
     Foramina.db = new ForaminaPersistence("foramina");
     ScaenaData.load();
     
@@ -73,20 +74,20 @@ public class Foramina extends JavaPlugin {
     this.getConfig().options().copyDefaults(true);
     saveConfig();
     
-    scaena = new Scaena();
     
   }
 
-  private static List<ItemStack> generateComponants() {
-    List<ItemStack> componants = new ArrayList<ItemStack>(16);
+  private static List<ForaminaGlyph> initializeGlyphs() {
+    List<ForaminaGlyph> glyphs = new ArrayList<ForaminaGlyph>(16);
     for ( byte i = 0; i < 16; i++ ) {
       ItemStack stack = new MaterialData(Material.WOOL, i).toItemStack();
-      componants.add(stack);
+      ForaminaGlyph glyph = new ForaminaGlyph(i, stack);
+      glyphs.add(glyph);
     }
-    return componants;
+    return glyphs;
   }
   
-  public static List<ItemStack> getComponants() {
-    return componants;
+  public static List<ForaminaGlyph> getAvailableGlyphs() {
+    return availableGlyphs;
   }
 }

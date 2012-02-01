@@ -10,6 +10,7 @@ import org.getspout.spoutapi.gui.WidgetAnchor;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import st.fivepoints.foramina.Foramina;
+import st.fivepoints.foramina.ForaminaGlyph;
 import st.fivepoints.foramina.ScaenaData;
 import st.fivepoints.foramina.gui.container.SlotContainer;
 
@@ -38,11 +39,11 @@ public class Composer extends GenericPopup {
     composer.setAnchor(WidgetAnchor.CENTER_CENTER);
     composer.setLayout(ContainerType.HORIZONTAL);
     
-    for ( int glyphIndex : scaena.getComponants() ) {
-      composer.addChild(new SlotContainer(glyphIndex, "Cycle"));
+    for ( int i = 0; i < scaena.getGlyphs().size(); i++ ) {
+      composer.addChild(new SlotContainer(scaena, i, "Cycle"));
     }
     
-    this.attachWidgets(Foramina.instance, background, composer);
+    this.attachWidgets(Foramina.instance, composer);
   }
   
 }

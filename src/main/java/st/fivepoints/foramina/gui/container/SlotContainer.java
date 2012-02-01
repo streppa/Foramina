@@ -9,18 +9,29 @@ import org.getspout.spoutapi.gui.GenericContainer;
 import org.getspout.spoutapi.gui.RenderPriority;
 
 import st.fivepoints.foramina.Foramina;
+import st.fivepoints.foramina.ForaminaGlyph;
+import st.fivepoints.foramina.ScaenaData;
+import st.fivepoints.foramina.gui.widget.SlotBackwardButton;
 import st.fivepoints.foramina.gui.widget.SlotButton;
+import st.fivepoints.foramina.gui.widget.SlotForwardButton;
 import st.fivepoints.foramina.gui.widget.SlotWidget;
 
 public class SlotContainer extends GenericContainer {
 
-  private List<SlotWidget> glyphs = new ArrayList<SlotWidget>(16);
+  private List<SlotWidget> slots = new ArrayList<SlotWidget>();
   
-  private int currentGlyphIndex = 0;
-
-  private SlotButton slotButton;
+  private int currentSlotIndex = 0;
+  private ScaenaData scaena;
+  private int scaenaSlotIndex;
   
-  public SlotContainer(int startingGlyphIndex, String label) {
+  private GenericContainer   slotButtons;
+  private SlotBackwardButton slotBackward;
+  private SlotForwardButton  slotForward;
+  
+  public SlotContainer(ScaenaData scaena, int scaenaSlotIndex, String label) {
+    this.scaena = scaena;
+    this.scaenaSlotIndex = scaenaSlotIndex;
+    
     this.setPriority(RenderPriority.Normal);
     
     this.setWidth(64);
@@ -35,39 +46,52 @@ public class SlotContainer extends GenericContainer {
     this.setLayout(ContainerType.VERTICAL);
     //this.setAuto(false);
     
-    for ( ItemStack stack : Foramina.getComponants() ) {
-      SlotWidget glyph = new SlotWidget(this, stack.clone());
-      this.glyphs.add(glyph);
-      this.addChild(glyph);
+    for ( ForaminaGlyph glyph : Foramina.getAvailableGlyphs() ) {
+      SlotWidget slot = new SlotWidget(this, glyph);
+      this.slots.add(glyph.getId(), slot);
+      this.addChild(slot);
     }
     
-    this.currentGlyphIndex = (startingGlyphIndex >= this.glyphs.size()) ? 0 : startingGlyphIndex;
-    this.setCurrent(this.currentGlyphIndex);
+    
+    this.currentSlotIndex = this.scaena.getGlyphs().get(this.scaenaSlotIndex).getId();
+    this.setCurrent(this.currentSlotIndex);
 
-    this.slotButton = new SlotButton(this, label);
-    this.addChild(this.slotButton);
-    //this.setWidth(0).setHeight(0);
+    this.slotBackward = new SlotBackwardButton(this);
+    this.slotForward  = new SlotForwardButton(this);
+
+    this.slotButtons = new GenericContainer();
+    this.slotButtons.setLayout(ContainerType.HORIZONTAL);
+    this.slotButtons.addChildren(this.slotBackward, this.slotForward);
+    
+    this.addChild(this.slotButtons);
   }
 
-  private void setCurrent(int glyphIndex) {
-    SlotWidget glyphToHide = this.glyphs.get(this.currentGlyphIndex); 
-    glyphToHide.setVisible(false);
+  private void setCurrent(int slotIndex) {
+    SlotWidget slotToHide = this.slots.get(this.currentSlotIndex); 
+    slotToHide.setVisible(false);
     
     // TODO: Check for out-of-bounds, or at least try-catch it.
-    SlotWidget glyphToShow = this.glyphs.get(glyphIndex);
-    glyphToShow.setVisible(true);
+    SlotWidget slotToShow = this.slots.get(slotIndex);
+    slotToShow.setVisible(true);
+    slotToShow.setFixed(false);
     
     this.setDirty(true);
-    this.currentGlyphIndex = glyphIndex;
+    this.currentSlotIndex = slotIndex;
+    
+    this.scaena.getGlyphs().set(this.scaenaSlotIndex, slotToShow.getGlyph());
   }
   
-  public void cycleGlyphs() {
-    int newGlyphIndex = this.currentGlyphIndex + 1;
-    if ( newGlyphIndex >= this.glyphs.size() ) newGlyphIndex = 0;
-    this.setCurrent(newGlyphIndex);
+  public void cycleSlots(boolean isForward) {
+    int newSlotIndex = this.currentSlotIndex;
+    if ( isForward ) {
+      newSlotIndex = ( ++newSlotIndex >= this.slots.size() ) ? 0 : newSlotIndex;
+    } else {
+      newSlotIndex = ( --newSlotIndex < 0 ) ? this.slots.size() - 1 : newSlotIndex;
+    }
+    this.setCurrent(newSlotIndex);
   }
   
-  public List<SlotWidget> getGlyphs() {
-    return this.glyphs;
+  public List<SlotWidget> getSlots() {
+    return this.slots;
   }
 }

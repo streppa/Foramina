@@ -1,18 +1,20 @@
 package st.fivepoints.foramina.gui.widget;
 
-import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.gui.GenericItemWidget;
 import org.getspout.spoutapi.gui.RenderPriority;
 
+import st.fivepoints.foramina.ForaminaGlyph;
 import st.fivepoints.foramina.gui.container.SlotContainer;
 
 public class SlotWidget extends GenericItemWidget {
 
   private SlotContainer slotContainer;
+  private ForaminaGlyph glyph;
   
-  public SlotWidget(SlotContainer slotContainer, ItemStack stack) {
-    super(stack);
+  public SlotWidget(SlotContainer slotContainer, ForaminaGlyph glyph) {
+    super(glyph.getStack());
     this.slotContainer = slotContainer;
+    this.glyph = glyph;
     
     this.setPriority(RenderPriority.Lowest);
 
@@ -22,6 +24,7 @@ public class SlotWidget extends GenericItemWidget {
     this.setDepth(size);
 
     this.setMargin(24);
+    this.setMarginBottom(40);
     
     this.setMaxHeight(size);
     this.setMaxWidth(size);
@@ -42,4 +45,8 @@ public class SlotWidget extends GenericItemWidget {
     return this.slotContainer;
   }
 
+  public ForaminaGlyph getGlyph() {
+    return this.glyph;
+  }
+  
 }
