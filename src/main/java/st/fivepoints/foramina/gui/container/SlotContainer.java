@@ -28,7 +28,7 @@ public class SlotContainer extends GenericContainer {
     //this.setAuto(false);
     
     this.slotWidgetContainer = new SlotWidgetContainer();
-    this.slotWidgetContainer.setCurrent(stack);
+
     this.slotButton = new SlotButton(label, slotWidgetContainer);
     this.addChildren(this.slotWidgetContainer, this.slotButton);
     //this.setWidth(0).setHeight(0);

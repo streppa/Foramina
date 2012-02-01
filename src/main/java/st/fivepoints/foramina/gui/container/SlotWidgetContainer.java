@@ -14,11 +14,15 @@ import st.fivepoints.foramina.gui.widget.SlotWidget;
 
 public class SlotWidgetContainer extends GenericContainer {
   
-  private List<SlotWidget> slots = new ArrayList<SlotWidget>(16);
+  private List<SlotWidget> glyphs = new ArrayList<SlotWidget>(16);
   
-  private SlotWidget currentSlot;
-    
+  private int currentGlyphIndex = 0;
+
   public SlotWidgetContainer() {
+    this(0);
+  }
+  
+  public SlotWidgetContainer( int startingGlyphIndex ) {
     this.setPriority(RenderPriority.Low);
     
     this.setWidth(64);
@@ -29,36 +33,35 @@ public class SlotWidgetContainer extends GenericContainer {
     this.setMinHeight(64);
     this.setMaxHeight(64);
     
-    this.setAuto(false);
-    //this.setX(0);
-    //this.setY(0);
-    //this.setAuto(false);
     for ( ItemStack stack : Foramina.getComponants() ) {
-      SlotWidget slot = new SlotWidget(stack.clone());
-      this.slots.add(slot);
-      this.addChild(slot);
+      SlotWidget glyph = new SlotWidget(stack.clone());
+      this.glyphs.add(glyph);
+      this.addChild(glyph);
     }
-    this.currentSlot = slots.get(0);
-    //this.setWidth(0).setHeight(0);
+    
+    this.currentGlyphIndex = (startingGlyphIndex >= this.glyphs.size()) ? 0 : startingGlyphIndex;
+    this.setCurrent(this.currentGlyphIndex);
   }
   
-  public void setCurrent(ItemStack stack) {
-    Foramina.log("setCurrent");
-    this.currentSlot.setVisible(false);
-    SlotWidget newSlot = this.currentSlot;
-    for ( SlotWidget slot : this.slots ) {
-      Foramina.log(" slot: " + slot.toString() + " idVisible:" + slot.isVisible());
-      if ( (slot.getTypeId() == stack.getTypeId()) && (slot.getData() == stack.getData().getData()) ) {
-        Foramina.log("  Found a stack to be current.");
-        Foramina.log("  stack: " + stack.toString());
-        newSlot = slot;
-        newSlot.setVisible(true);
-        break;
-      }
-    }
-    this.currentSlot = newSlot;
+  private void setCurrent(int glyphIndex) {
+    SlotWidget glyphToHide = this.glyphs.get(this.currentGlyphIndex); 
+    glyphToHide.setVisible(false);
+    
+    // TODO: Check for out-of-bounds, or at least try-catch it.
+    SlotWidget glyphToShow = this.glyphs.get(glyphIndex);
+    glyphToShow.setVisible(true);
+    
     this.setDirty(true);
-    Foramina.log("  slot: " + currentSlot.toString() + " isVisible:" + currentSlot.isVisible());
+    this.currentGlyphIndex = glyphIndex;
   }
   
+  public void cycleGlyphs() {
+    int newGlyphIndex = this.currentGlyphIndex + 1;
+    if ( newGlyphIndex >= this.glyphs.size() ) newGlyphIndex = 0;
+    this.setCurrent(newGlyphIndex);
+  }
+  
+  public List<SlotWidget> getGlyphs() {
+    return this.glyphs;
+  }
 }

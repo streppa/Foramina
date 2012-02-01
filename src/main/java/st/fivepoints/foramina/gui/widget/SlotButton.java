@@ -32,7 +32,6 @@ public class SlotButton extends GenericButton {
 
   public void onButtonClick(ButtonClickEvent event) {
     Foramina.log("onButtonClick");
-    Foramina.log("  slot.getWidth = "  + slot.getWidth());
-    Foramina.log("  slot.getHeight = " + slot.getHeight());
+    slot.cycleGlyphs();
   }
 }
