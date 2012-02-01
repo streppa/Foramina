@@ -10,7 +10,6 @@ import org.getspout.spoutapi.gui.WidgetAnchor;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import st.fivepoints.foramina.Foramina;
-import st.fivepoints.foramina.ForaminaGlyph;
 import st.fivepoints.foramina.ScaenaData;
 import st.fivepoints.foramina.gui.container.SlotContainer;
 

@@ -3,7 +3,6 @@ package st.fivepoints.foramina.gui.container;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.gui.ContainerType;
 import org.getspout.spoutapi.gui.GenericContainer;
 import org.getspout.spoutapi.gui.RenderPriority;
@@ -12,7 +11,6 @@ import st.fivepoints.foramina.Foramina;
 import st.fivepoints.foramina.ForaminaGlyph;
 import st.fivepoints.foramina.ScaenaData;
 import st.fivepoints.foramina.gui.widget.SlotBackwardButton;
-import st.fivepoints.foramina.gui.widget.SlotButton;
 import st.fivepoints.foramina.gui.widget.SlotForwardButton;
 import st.fivepoints.foramina.gui.widget.SlotWidget;
 
