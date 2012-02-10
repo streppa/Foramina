@@ -9,7 +9,9 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.material.block.GenericCubeCustomBlock;
+import org.getspout.spoutapi.block.design.Texture;
+import org.getspout.spoutapi.material.MaterialData;
+import org.getspout.spoutapi.material.block.GenericCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import st.fivepoints.foramina.Foramina;
@@ -18,10 +20,18 @@ import st.fivepoints.foramina.ScaenaScheduler;
 import st.fivepoints.foramina.gui.Composer;
 
 
-public class Scaena extends GenericCubeCustomBlock {
+public class Scaena extends GenericCustomBlock {
 
+  private static final int textureSize = 256;
+  private static final int spriteSize  = 16;
+  private static final String textureUrl = "http://imgur.com/V1fUP.png";
+  private static final Texture texture = new Texture(Foramina.instance, textureUrl, textureSize, textureSize, spriteSize); 
+  
   public Scaena() {
-    super(Foramina.instance, "Scaena", "http://i.imgur.com/bg8LO.png", 16);
+    super(Foramina.instance, "Scaena", true);
+    this.setBlockDesign(new ScaenaDesign());
+    this.setHardness(MaterialData.cobblestone.getHardness());
+    this.setLightLevel(MaterialData.glowstoneBlock.getLightLevel());   
   }
 
   public void onNeighborBlockChange(World world, int x, int y, int z, int changedId) { }
@@ -85,5 +95,22 @@ public class Scaena extends GenericCubeCustomBlock {
     if ( destination != null ) player.teleport(destination.add(0.5, 1, 0.5));
 
   }
-  
+
+  public static int getTextureSize() {
+    return textureSize;
+  }
+
+  public static int getSpriteSize() {
+    return spriteSize;
+  }
+
+  public static String getTextureURL() {
+    return textureUrl;
+  }
+
+  public static Texture getTexture() {
+    return texture;
+  }
+
+
 }

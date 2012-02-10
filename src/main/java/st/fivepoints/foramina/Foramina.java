@@ -21,8 +21,10 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.getspout.spoutapi.SpoutManager;
 
 import st.fivepoints.foramina.material.Scaena;
+import st.fivepoints.foramina.recipe.ScaenaRecipe;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -61,19 +63,21 @@ public class Foramina extends JavaPlugin {
 
   public void onEnable() {
     log("Plugin enabled.");
+
+    this.getConfig().options().copyDefaults(true);
+    saveConfig();
+
     scaena = new Scaena();
+    SpoutManager.getFileManager().addToPreLoginCache(this, Scaena.getTextureURL());
     Foramina.db = new ForaminaPersistence("foramina");
     ScaenaData.load();
     
     getCommand("foramina").setExecutor(commandExecutor);
     
     this.listener = new ForaminaListener();
-
+    
+    SpoutManager.getMaterialManager().registerSpoutRecipe(new ScaenaRecipe());
     // foraminaScaenaScheduler = new ForaminaScaenaScheduler(this);
-    
-    this.getConfig().options().copyDefaults(true);
-    saveConfig();
-    
     
   }
 
