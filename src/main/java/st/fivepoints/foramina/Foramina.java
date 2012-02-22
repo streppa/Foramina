@@ -68,6 +68,7 @@ public class Foramina extends JavaPlugin {
     saveConfig();
 
     scaena = new Scaena();
+
     SpoutManager.getFileManager().addToPreLoginCache(this, Scaena.getTextureURL());
     Foramina.db = new ForaminaPersistence("foramina");
     ScaenaData.load();

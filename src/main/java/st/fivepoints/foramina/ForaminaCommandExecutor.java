@@ -37,7 +37,23 @@ public class ForaminaCommandExecutor implements CommandExecutor {
 
         if  ( commandName.equals("foramina") ) {
             Player player = (Player) sender;
-            player.getInventory().addItem(new SpoutItemStack(Foramina.scaena, Integer.parseInt(args[0])));
+
+            for ( String arg : args ) {
+              Foramina.log("arg: " + arg);
+            }
+            
+            if ( args.length == 0 ) return false;
+            
+            if ( args[0].equals("block") ) {
+              Foramina.log("block");
+              int amount = ( args.length == 1 ) ? Integer.parseInt(args[1]) : 1;
+              player.getInventory().addItem(new SpoutItemStack(Foramina.scaena, amount));              
+            } else if ( args[0].equals("exp") ) {
+              Foramina.log("exp");
+              int amount = ( args.length == 1 ) ? Integer.parseInt(args[1]) : 10;
+              player.setExp(player.getExp() + amount);
+            }
+            
             return true;
         }
         

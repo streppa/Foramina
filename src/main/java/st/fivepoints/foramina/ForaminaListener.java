@@ -22,7 +22,6 @@ public class ForaminaListener implements Listener {
   public void onBlockPlace( BlockPlaceEvent event ) {
     if ( event.isCancelled() ) return;
     
-    Foramina.log("onBlockPlace");
     SpoutBlock blockAgainst = (SpoutBlock) event.getBlockAgainst();
     
     if ( blockAgainst.isCustomBlock() && blockAgainst.getCustomBlock() instanceof Scaena ) {

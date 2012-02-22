@@ -24,53 +24,43 @@ public class Scaena extends GenericCustomBlock {
 
   private static final int textureSize = 256;
   private static final int spriteSize  = 16;
-  private static final String textureUrl = "http://imgur.com/V1fUP.png";
+  private static final String textureUrl = "http://dl.dropbox.com/u/104908/foramina-texture.png";
   private static final Texture texture = new Texture(Foramina.instance, textureUrl, textureSize, textureSize, spriteSize); 
   
   public Scaena() {
-    super(Foramina.instance, "Scaena", true);
-    this.setBlockDesign(new ScaenaDesign());
+    super(Foramina.instance, "Scaena", true, new ScaenaDesign());
     this.setHardness(MaterialData.cobblestone.getHardness());
-    this.setLightLevel(MaterialData.glowstoneBlock.getLightLevel());   
   }
 
   public void onNeighborBlockChange(World world, int x, int y, int z, int changedId) { }
   
-  public void onBlockPlace(World world, int x, int y, int z) { }
+  public void onBlockPlace(World world, int x, int y, int z) {}
 
   public void onBlockPlace(World world, int x, int y, int z, LivingEntity living) { }
 
   public void onBlockDestroyed(World world, int x, int y, int z) { 
-    Foramina.log("onBlockDestroyed");
-
     ScaenaData scaena = ScaenaData.findScaena(world, x, y, z);
     if ( scaena != null ) ScaenaData.removeScaena(scaena);
   }
 
   public boolean onBlockInteract(World world, int x, int y, int z, SpoutPlayer player) {
-    Foramina.log("onBlockInteract");
-    
     ScaenaData scaena = ScaenaData.findScaena(world, x, y, z);
     if ( scaena == null ) scaena = new ScaenaData(world, x, y, z);
     
     if ( ! (player.getMainScreen().getActivePopup() instanceof Composer) ) {
-      Foramina.log(" Loading Composer popup.");
       player.getMainScreen().attachPopupScreen(new Composer(scaena, player));
     }
     return true;
   }
 
   public void onEntityMoveAt(World world, int x, int y, int z, Entity entity) {
-    Foramina.log("onEntityMoveAt");
     if ( entity instanceof Player ) {
       Location loc = new Location(world, x, y, z);
       new ScaenaScheduler(SpoutManager.getPlayer((Player) entity), this, loc, 1);
     }
   }
 
-  public void onBlockClicked(World world, int x, int y, int z, SpoutPlayer player) {
-    Foramina.log("onBlockClicked");
-  }
+  public void onBlockClicked(World world, int x, int y, int z, SpoutPlayer player) {}
 
   public boolean isProvidingPowerTo(World world, int x, int y, int z, BlockFace face) {
       return false;
@@ -81,7 +71,6 @@ public class Scaena extends GenericCustomBlock {
   }
 
   public void onTeleport(Location location, SpoutPlayer player) {
-    Foramina.log("onTeleport");
     ScaenaData manifest = ScaenaData.findScaena(location);
 
     Location destination = null;
