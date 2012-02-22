@@ -44,7 +44,7 @@ public class Scaena extends GenericCustomBlock {
   }
 
   public boolean onBlockInteract(World world, int x, int y, int z, SpoutPlayer player) {
-    player.
+    
     ScaenaData scaena = ScaenaData.findScaena(world, x, y, z);
     if ( scaena == null ) scaena = new ScaenaData(world, x, y, z);
     
