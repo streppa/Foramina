@@ -34,6 +34,10 @@ public class ScaenaData {
     return scaena;
   }
   
+  public static ScaenaData findScaenaByOverheadLocation( Location location ) {
+    return findScaena(location.clone().add(0, 0, -1));
+  }
+  
   public static ScaenaData findScaena(World world, double x, double y, double z) {
     Location location = new Location(world, x, y, z);
     return findScaena(location);
