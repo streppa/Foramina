@@ -36,8 +36,11 @@ public class Foramina extends JavaPlugin {
   public static String label = "[Foramina]";
   public static Logger log = Logger.getLogger("Foramina");
 
+  public static int teleportDelay = 3;
+  public static int teleportCooldown = 3;
+  
   public static Scaena scaena;
-  public static ScaenaScheduler foraminaScaenaScheduler;
+  public static ScaenaScheduler scaenaScheduler;
   public static ForaminaPersistence db;
   
   public static List<ForaminaGlyph> availableGlyphs = initializeGlyphs();
@@ -78,7 +81,7 @@ public class Foramina extends JavaPlugin {
     this.listener = new ForaminaListener();
     
     SpoutManager.getMaterialManager().registerSpoutRecipe(new ScaenaRecipe());
-    // foraminaScaenaScheduler = new ForaminaScaenaScheduler(this);
+    scaenaScheduler = new ScaenaScheduler(3, 3);
     
   }
 

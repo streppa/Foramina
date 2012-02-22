@@ -4,11 +4,17 @@ import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
 import st.fivepoints.foramina.material.Scaena;
 
@@ -43,5 +49,17 @@ public class ForaminaListener implements Listener {
     int chunkz = chunk.getZ();
     world.refreshChunk(chunkx, chunkz);
   
+  }
+  
+  @EventHandler(priority = EventPriority.LOW)
+  public void onPlayerLogin( PlayerLoginEvent event ) {
+    ForaminaPlayer.create(event.getPlayer());
+  }
+  
+  @EventHandler
+  public void onPlayerLogout( PlayerQuitEvent event ) {
+    ForaminaPlayer foraminaPlayer = ForaminaPlayer.findByPlayer(event.getPlayer());
+    if ( foraminaPlayer == null ) return;
+    ForaminaPlayer.destroy(foraminaPlayer);
   }
 }

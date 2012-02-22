@@ -9,6 +9,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.getspout.spoutapi.block.SpoutBlock;
 
 import st.fivepoints.foramina.material.Scaena;
@@ -34,8 +35,8 @@ public class ScaenaData {
     return scaena;
   }
   
-  public static ScaenaData findScaenaByOverheadLocation( Location location ) {
-    return findScaena(location.clone().add(0, 0, -1));
+  public static ScaenaData findScaenaByPlayerLocation( Player player) {
+    return findScaena(player.getLocation().clone().subtract(0, 1, 0));
   }
   
   public static ScaenaData findScaena(World world, double x, double y, double z) {

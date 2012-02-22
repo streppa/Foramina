@@ -54,12 +54,7 @@ public class Scaena extends GenericCustomBlock {
     return true;
   }
 
-  public void onEntityMoveAt(World world, int x, int y, int z, Entity entity) {
-    if ( entity instanceof Player ) {
-      Location loc = new Location(world, x, y, z);
-      new ScaenaScheduler(SpoutManager.getPlayer((Player) entity), this, loc, 1);
-    }
-  }
+  public void onEntityMoveAt(World world, int x, int y, int z, Entity entity) {}
 
   public void onBlockClicked(World world, int x, int y, int z, SpoutPlayer player) {}
 
