@@ -15,9 +15,10 @@ import org.getspout.spoutapi.material.block.GenericCustomBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import st.fivepoints.foramina.Foramina;
+import st.fivepoints.foramina.ForaminaPlayer;
 import st.fivepoints.foramina.ScaenaData;
-import st.fivepoints.foramina.ScaenaScheduler;
 import st.fivepoints.foramina.gui.Composer;
+import st.fivepoints.foramina.task.WatchScaenus;
 
 
 public class Scaena extends GenericCustomBlock {
@@ -34,7 +35,10 @@ public class Scaena extends GenericCustomBlock {
 
   public void onNeighborBlockChange(World world, int x, int y, int z, int changedId) { }
   
-  public void onBlockPlace(World world, int x, int y, int z) {}
+  public void onBlockPlace(World world, int x, int y, int z) {
+    ScaenaData scaena = ScaenaData.findScaena(world, x, y, z);
+    if ( scaena == null ) scaena = new ScaenaData(world, x, y, z);
+  }
 
   public void onBlockPlace(World world, int x, int y, int z, LivingEntity living) { }
 
@@ -56,6 +60,10 @@ public class Scaena extends GenericCustomBlock {
 
   public void onEntityMoveAt(World world, int x, int y, int z, Entity entity) {}
 
+/*  public void onPlayerTreadAt(World world, int x, int y, int z, SpoutPlayer player) {
+    
+  }
+  */
   public void onBlockClicked(World world, int x, int y, int z, SpoutPlayer player) {}
 
   public boolean isProvidingPowerTo(World world, int x, int y, int z, BlockFace face) {
@@ -67,13 +75,20 @@ public class Scaena extends GenericCustomBlock {
   }
 
   public void onTeleport(Location location, SpoutPlayer player) {
-    ScaenaData manifest = ScaenaData.findScaena(location);
+    Foramina.log("Scaena.onTeleport()");
+    ScaenaData scaena = ScaenaData.findScaena(location);
 
     Location destination = null;
     
-    if ( manifest != null ) {
-      for ( ScaenaData targetManifest : ScaenaData.getScaenus() ) {
-        if ( manifest.canLinkTo(targetManifest) ) destination = targetManifest.getLocation().clone();
+    if ( scaena != null ) {
+      for ( ScaenaData targetScaena : ScaenaData.getScaenus() ) {
+        if ( scaena.canLinkTo(targetScaena) ) {
+          destination = targetScaena.getLocation().clone();
+          ForaminaPlayer foraminaPlayer = ForaminaPlayer.findBySpoutPlayer(player);
+          foraminaPlayer.setLastDestinationScaena(targetScaena);
+          foraminaPlayer.clearTimer();
+          foraminaPlayer.startCooldown();
+        }
       }
     }
     
@@ -81,6 +96,10 @@ public class Scaena extends GenericCustomBlock {
 
   }
 
+  public void onTeleport(World world, int x, int y, int z, SpoutPlayer player) {
+    this.onTeleport( new Location(world, x, y, z), player);
+  }
+  
   public static int getTextureSize() {
     return textureSize;
   }

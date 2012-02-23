@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
 
 public class ForaminaPlayer {
@@ -15,8 +16,10 @@ public class ForaminaPlayer {
   private static List<ForaminaPlayer> players = new ArrayList<ForaminaPlayer>();
   
   private Player player;
-  private Map<Location, Date> timestamps = new HashMap<Location, Date>();
+  private Date timer = null;
   private Date cooldown = new Date();
+  private ScaenaData lastScaena;
+  private ScaenaData lastDestinationScaena;
   
   private ForaminaPlayer( Player player ) {
     Foramina.log("Creating a ForaminaPlayer object for '" + player.getDisplayName() + "'.");
@@ -42,6 +45,10 @@ public class ForaminaPlayer {
     return foraminaPlayer;
   }
   
+  public static ForaminaPlayer findBySpoutPlayer( SpoutPlayer player ) {
+    return findByPlayer( (Player) player);
+  }
+  
   public static void destroy( ForaminaPlayer player ) {
     players.remove(player);
   }
@@ -61,34 +68,72 @@ public class ForaminaPlayer {
     return this.player;
   }
   
-  public Date getTimestamp( Location location ) {
-    Date date = null;
-    if ( timestamps.containsKey(location) ) date = timestamps.get(location);
-    return date;
+  public Date getTimer() {
+    return this.timer;
   }
   
-  public void addTimestamp( Location location ) {
-    timestamps.put(location, new Date());
-    
+  public int secondsSinceStart() {
+    int seconds = 0;
+    if ( this.timer != null ) {
+      long timeInSeconds  = new Date().getTime() / 1000;
+      long timerInSeconds = this.timer.getTime() / 1000;
+      seconds = (int) (timeInSeconds - timerInSeconds);
+    }
+    return seconds;
+  }
+  
+  public void startTimer() {
+    this.timer = new Date();
+  }
+  
+  public void clearTimer() {
+    this.timer = null;
+  }
+  
+  public boolean timerIsRunning() {
+    return ( this.timer == null ) ? false : true;  
   }
   
   public Date getCooldown() {
     return this.cooldown;
   }
   
-  public void restartCooldown() {
+  public void startCooldown() {
     this.cooldown = new Date();
   }
   
-  public boolean cooldownIsFinished() {
-    Foramina.log(this.player.getDisplayName() + " is cooling down.");
+  public boolean isCoolingDown( int teleportCooldown) {
     long cooldownInSeconds = this.cooldown.getTime() / 1000;
     long timeInSeconds = new Date().getTime() / 1000;
-    
-    return ( (timeInSeconds - cooldownInSeconds) >= Foramina.teleportCooldown );
+    return ( (timeInSeconds - cooldownInSeconds) <= teleportCooldown );
+  }
+
+  public ScaenaData getLastScaena() {
+    return this.lastScaena;
   }
   
-  public boolean hasTimestamp( Location location ) {
-    return ( this.getTimestamp(location) != null ) ? true : false; 
+  public ScaenaData setLastScaena( ScaenaData scaena ) {
+    ScaenaData oldScaena = this.lastScaena;
+    this.lastScaena = scaena;
+    return oldScaena;
   }
+  
+  public void clearLastScaena() {
+    this.lastScaena = null;
+  }
+
+  public ScaenaData getLastDestinationScaena() {
+    return this.lastDestinationScaena;
+  }
+
+  public ScaenaData setLastDestinationScaena( ScaenaData scaena ) {
+    ScaenaData oldScaena = this.lastDestinationScaena;
+    this.lastDestinationScaena = scaena;
+    return oldScaena;
+  }
+  
+  public void clearLastDestinationScaena() {
+    this.lastDestinationScaena = null;
+  }
+  
 }

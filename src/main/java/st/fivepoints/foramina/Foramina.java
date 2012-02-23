@@ -25,6 +25,7 @@ import org.getspout.spoutapi.SpoutManager;
 
 import st.fivepoints.foramina.material.Scaena;
 import st.fivepoints.foramina.recipe.ScaenaRecipe;
+import st.fivepoints.foramina.task.WatchScaenus;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -36,11 +37,11 @@ public class Foramina extends JavaPlugin {
   public static String label = "[Foramina]";
   public static Logger log = Logger.getLogger("Foramina");
 
-  public static int teleportDelay = 3;
-  public static int teleportCooldown = 3;
+  public static int teleportDelay = 2;
+  public static int teleportCooldown = 0;
   
   public static Scaena scaena;
-  public static ScaenaScheduler scaenaScheduler;
+  public static ScaenaScheduler ScaenaScheduler;
   public static ForaminaPersistence db;
   
   public static List<ForaminaGlyph> availableGlyphs = initializeGlyphs();
@@ -81,7 +82,8 @@ public class Foramina extends JavaPlugin {
     this.listener = new ForaminaListener();
     
     SpoutManager.getMaterialManager().registerSpoutRecipe(new ScaenaRecipe());
-    scaenaScheduler = new ScaenaScheduler(3, 3);
+    // TODO: 'teleportDelay' and 'teleportCooldown' should be configurable.
+    ScaenaScheduler = new ScaenaScheduler(teleportDelay, teleportCooldown);
     
   }
 

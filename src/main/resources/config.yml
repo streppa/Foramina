@@ -2,4 +2,10 @@
 
 
 sqlite_file: foramina
-exclude_colors:
+
+
+# 
+teleport:
+  delay: 3
+  cooldown: 3
+version: 0.5

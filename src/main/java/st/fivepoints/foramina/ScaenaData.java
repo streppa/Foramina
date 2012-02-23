@@ -9,6 +9,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.block.SpoutBlock;
 
@@ -22,6 +23,7 @@ public class ScaenaData {
   
   private List<ForaminaGlyph> glyphs = new ArrayList<ForaminaGlyph>(ScaenaData.availableSlots);
   private Location location;
+  private SpoutBlock block;
   
   public static List<ScaenaData> getScaenus() {
     return ScaenaData.scaenus;
@@ -35,8 +37,9 @@ public class ScaenaData {
     return scaena;
   }
   
-  public static ScaenaData findScaenaByPlayerLocation( Player player) {
-    return findScaena(player.getLocation().clone().subtract(0, 1, 0));
+  public static ScaenaData findScaenaByPlayer( Player player) {
+    Location location = player.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation();
+    return findScaena(location);
   }
   
   public static ScaenaData findScaena(World world, double x, double y, double z) {
@@ -50,6 +53,7 @@ public class ScaenaData {
 
   public ScaenaData(Location location) {
     this.location = location;
+    this.block = (SpoutBlock) location.getBlock();
     for ( int i = 0; i < ScaenaData.availableSlots; i++ ) {
       this.glyphs.add(Foramina.getAvailableGlyphs().get(0));
     }
@@ -64,6 +68,14 @@ public class ScaenaData {
     return this.location;
   }
 
+  public SpoutBlock getBlock() {
+    return this.block;
+  }
+  
+  public Scaena getScaena() {
+    return (Scaena) this.block.getCustomBlock();
+  }
+  
   public List<ForaminaGlyph> getGlyphs() {
     return this.glyphs; 
   }
