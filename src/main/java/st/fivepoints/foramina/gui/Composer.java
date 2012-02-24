@@ -5,6 +5,7 @@ import org.getspout.spoutapi.gui.ContainerType;
 import org.getspout.spoutapi.gui.GenericContainer;
 import org.getspout.spoutapi.gui.GenericGradient;
 import org.getspout.spoutapi.gui.GenericPopup;
+import org.getspout.spoutapi.gui.GenericTexture;
 import org.getspout.spoutapi.gui.RenderPriority;
 import org.getspout.spoutapi.gui.WidgetAnchor;
 import org.getspout.spoutapi.player.SpoutPlayer;
@@ -15,19 +16,32 @@ import st.fivepoints.foramina.gui.container.SlotContainer;
 
 public class Composer extends GenericPopup {
 
+  private static String screenURL = "http://dl.dropbox.com/u/104908/scaena_screen.png";
+  
   public Composer( ScaenaData scaena, SpoutPlayer player ) {
-    this.setWidth(216);
-    this.setHeight(104);    
+    //this.setWidth(216);
+    //this.setHeight(104);    
+    this.setWidth(228);
+    this.setHeight(79);    
     
     GenericGradient background = new GenericGradient();
     background.setPriority(RenderPriority.Highest);
-    background.setTopColor(new Color(96, 96, 96, 255));
-    background.setBottomColor(new Color(64, 64, 64, 255));
-    background.setWidth(this.getWidth());
-    background.setHeight(this.getHeight());
-    background.shiftXPos(- this.getWidth() / 2); 
-    background.shiftYPos(- this.getHeight() / 2); 
+    background.setTopColor(new Color(32, 32, 32, 238));
+    background.setBottomColor(new Color(223, 223, 223, 238));
+    background.setWidth(this.getWidth() - 8);
+    background.setHeight(this.getHeight() - 8);
+    background.shiftXPos(- background.getWidth() / 2); 
+    background.shiftYPos(- background.getHeight() / 2); 
     background.setAnchor(WidgetAnchor.CENTER_CENTER);
+    
+    GenericTexture screen = new GenericTexture(screenURL);
+    screen.setPriority(RenderPriority.High);
+    screen.setWidth(this.getWidth());
+    screen.setHeight(this.getHeight());
+    screen.shiftXPos(- screen.getWidth() / 2); 
+    screen.shiftYPos(- screen.getHeight() / 2); 
+    screen.setAnchor(WidgetAnchor.CENTER_CENTER);
+    
     
     GenericContainer composer = new GenericContainer();
     composer.setPriority(RenderPriority.High);
@@ -42,7 +56,7 @@ public class Composer extends GenericPopup {
       composer.addChild(new SlotContainer(scaena, i, "Cycle"));
     }
     
-    this.attachWidgets(Foramina.instance, composer);
+    this.attachWidgets(Foramina.instance, background, screen, composer);
   }
   
 }

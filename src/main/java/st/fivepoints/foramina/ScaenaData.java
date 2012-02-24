@@ -95,7 +95,6 @@ public class ScaenaData {
   }
   
   public static void load() {
-    Foramina.log("Loading scaenus.");
     try {
       ResultSet rs_locations = Foramina.db.query("SELECT * FROM locations");
       while ( rs_locations.next() ) {
@@ -130,7 +129,6 @@ public class ScaenaData {
   }
   
   public static void save() {
-    Foramina.log("Saving manifest.");
     Foramina.db.execute("DELETE FROM scaenus");
     Foramina.db.execute("DELETE FROM locations");
     

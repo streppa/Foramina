@@ -38,7 +38,7 @@ public class ForaminaListener implements Listener {
   /** codename_B's BananaChunk plugin uses this ingenious method of forcing
    * Bukkit to refresh the chunk the player is teleporting into.
    */
- /* @EventHandler
+  @EventHandler
   public void onPlayerTeleport( PlayerTeleportEvent event ) {
     if ( event.isCancelled() ) return;
     
@@ -49,7 +49,7 @@ public class ForaminaListener implements Listener {
     int chunkz = chunk.getZ();
     world.refreshChunk(chunkx, chunkz);
 
-  }*/
+  }
   
   @EventHandler(priority = EventPriority.LOW)
   public void onPlayerLogin( PlayerLoginEvent event ) {

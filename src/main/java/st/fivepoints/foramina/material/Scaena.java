@@ -75,7 +75,6 @@ public class Scaena extends GenericCustomBlock {
   }
 
   public void onTeleport(Location location, SpoutPlayer player) {
-    Foramina.log("Scaena.onTeleport()");
     ScaenaData scaena = ScaenaData.findScaena(location);
 
     Location destination = null;

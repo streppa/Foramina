@@ -16,23 +16,21 @@ public class SlotWidget extends GenericItemWidget {
     this.slotContainer = slotContainer;
     this.glyph = glyph;
     
-    this.setPriority(RenderPriority.Lowest);
+    this.setPriority(RenderPriority.Normal);
 
     int size = 16;
     this.setHeight(size);
     this.setWidth(size);
     this.setDepth(size);
 
-    this.setMargin(24);
-    this.setMarginBottom(40);
-    
-    this.setMaxHeight(size);
-    this.setMaxWidth(size);
     this.setMinHeight(size);
     this.setMinWidth(size);
+
+    this.setMaxHeight(size);
+    this.setMaxWidth(size);
     
-    this.setFixed(true);
-    
+    this.setMargin(15, 23, 20, 23);
+
     this.setVisible(false);
   }
 

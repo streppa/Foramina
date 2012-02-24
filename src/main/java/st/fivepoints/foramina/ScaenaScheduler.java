@@ -21,8 +21,7 @@ public class ScaenaScheduler implements Runnable {
   public ScaenaScheduler( int teleportDelay, int teleportCooldown ) {
     this.teleportDelay    = teleportDelay;
     this.teleportCooldown = teleportCooldown;
-    
-    Bukkit.getServer().getScheduler().scheduleAsyncRepeatingTask(Foramina.instance, this, 0, 10);
+    Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Foramina.instance, this, 0, 10);
   }
   
   public void run() {

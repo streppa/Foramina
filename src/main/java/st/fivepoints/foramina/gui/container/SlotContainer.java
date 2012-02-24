@@ -6,6 +6,7 @@ import java.util.List;
 import org.getspout.spoutapi.gui.ContainerType;
 import org.getspout.spoutapi.gui.GenericContainer;
 import org.getspout.spoutapi.gui.RenderPriority;
+import org.getspout.spoutapi.gui.WidgetAnchor;
 
 import st.fivepoints.foramina.Foramina;
 import st.fivepoints.foramina.ForaminaGlyph;
@@ -22,6 +23,7 @@ public class SlotContainer extends GenericContainer {
   private ScaenaData scaena;
   private int scaenaSlotIndex;
   
+  private GenericContainer   slotWidgets;
   private GenericContainer   slotButtons;
   private SlotBackwardButton slotBackward;
   private SlotForwardButton  slotForward;
@@ -32,9 +34,9 @@ public class SlotContainer extends GenericContainer {
     
     this.setPriority(RenderPriority.Normal);
     
-    this.setWidth(64);
-    this.setMinWidth(64);
-    this.setMaxWidth(64);
+    this.setWidth(68);
+    this.setMinWidth(68);
+    this.setMaxWidth(68);
     
     this.setHeight(96);
     this.setMinHeight(96);
@@ -42,14 +44,20 @@ public class SlotContainer extends GenericContainer {
     
     this.setMargin(4);
     this.setLayout(ContainerType.VERTICAL);
-    //this.setAuto(false);
+    
+    this.slotWidgets = new GenericContainer();
+    this.slotWidgets.setHeight(64);
+    this.slotWidgets.setWidth(64);
+    this.slotWidgets.setMargin(0, 2);
+    this.slotWidgets.setLayout(ContainerType.OVERLAY);
     
     for ( ForaminaGlyph glyph : Foramina.getAvailableGlyphs() ) {
       SlotWidget slot = new SlotWidget(this, glyph);
       this.slots.add(glyph.getId(), slot);
-      this.addChild(slot);
+      this.slotWidgets.addChild(slot);
     }
-    
+
+    this.addChild(this.slotWidgets);
     
     this.currentSlotIndex = this.scaena.getGlyphs().get(this.scaenaSlotIndex).getId();
     this.setCurrent(this.currentSlotIndex);
@@ -67,11 +75,12 @@ public class SlotContainer extends GenericContainer {
   private void setCurrent(int slotIndex) {
     SlotWidget slotToHide = this.slots.get(this.currentSlotIndex); 
     slotToHide.setVisible(false);
+    slotToHide.setPriority(RenderPriority.Normal);
     
     // TODO: Check for out-of-bounds, or at least try-catch it.
     SlotWidget slotToShow = this.slots.get(slotIndex);
     slotToShow.setVisible(true);
-    slotToShow.setFixed(false);
+    slotToShow.setPriority(RenderPriority.Low);
     
     this.setDirty(true);
     this.currentSlotIndex = slotIndex;

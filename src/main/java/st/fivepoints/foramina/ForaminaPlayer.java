@@ -22,7 +22,6 @@ public class ForaminaPlayer {
   private ScaenaData lastDestinationScaena;
   
   private ForaminaPlayer( Player player ) {
-    Foramina.log("Creating a ForaminaPlayer object for '" + player.getDisplayName() + "'.");
     this.player = player;
   }
 
@@ -54,7 +53,6 @@ public class ForaminaPlayer {
   }
   
   public static void destroy( Player player ) {
-    Foramina.log("About to remove ForaminaPlayer");
     ForaminaPlayer foraminaPlayer = findByPlayer(player);
     if ( foraminaPlayer == null ) return;
     players.remove(foraminaPlayer);
@@ -135,5 +133,4 @@ public class ForaminaPlayer {
   public void clearLastDestinationScaena() {
     this.lastDestinationScaena = null;
   }
-  
 }

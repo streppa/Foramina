@@ -4,7 +4,6 @@ import org.getspout.spoutapi.event.screen.ButtonClickEvent;
 import org.getspout.spoutapi.gui.GenericButton;
 import org.getspout.spoutapi.gui.RenderPriority;
 
-import st.fivepoints.foramina.Foramina;
 import st.fivepoints.foramina.gui.container.SlotContainer;
 
 public class SlotButton extends GenericButton {
@@ -15,7 +14,7 @@ public class SlotButton extends GenericButton {
     super(label);
     this.slotContainer = slotContainer;
     
-    this.setPriority(RenderPriority.Low);
+    this.setPriority(RenderPriority.Lowest);
 
     this.setHeight(16);
     this.setMaxHeight(16);
@@ -24,15 +23,10 @@ public class SlotButton extends GenericButton {
     this.setWidth(32);
     this.setMaxWidth(32);
     this.setMinWidth(32);
-    
-    //this.setX(0);
-    //this.setY(96);
-    //this.setFixed(false);
-
+    this.setMargin(1);
   }
 
   public void onButtonClick(ButtonClickEvent event, boolean isForward) {
-    Foramina.log("onButtonClick");
     this.getSlotContainer().cycleSlots(isForward);
   }
   
