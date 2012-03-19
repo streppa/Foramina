@@ -16,7 +16,7 @@
     </repository>
     <repository>
       <id>spout-api-repo</id>
-      <url>http://nexus.getspout.org/content/groups/public/</url>
+      <url>http://repo.spout.org</url>
     </repository>
   </repositories>
   <!--  Dependencies -->
@@ -39,7 +39,7 @@
     <dependency>
     	<groupId>org.bukkit</groupId>
     	<artifactId>bukkit</artifactId>
-    	<version>1.1-R2-SNAPSHOT</version>
+    	<version>1.2.3-R0.2-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <build>

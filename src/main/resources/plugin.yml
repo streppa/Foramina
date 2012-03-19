@@ -1,8 +1,12 @@
 name: Foramina
+author: Scott Treppa
+
 main: st.fivepoints.foramina.Foramina
 version: 0.1
 
 depend: [Spout]
+
+startup: postworld
 
 commands:
    foramina:

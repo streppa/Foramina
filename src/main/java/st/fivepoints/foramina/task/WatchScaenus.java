@@ -1,20 +1,34 @@
+// $Id$
+/*
+ * Foramina
+ * Copyright (C) 2011 Scott Treppa [lose_the_grimm]
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package st.fivepoints.foramina.task;
 
-import java.util.Date;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.block.BlockFace;
 import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.SpoutWorld;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import st.fivepoints.foramina.Foramina;
 import st.fivepoints.foramina.ForaminaPlayer;
 import st.fivepoints.foramina.ScaenaData;
-import st.fivepoints.foramina.material.Scaena;
 
 public class WatchScaenus implements Runnable {
 
@@ -25,7 +39,6 @@ public class WatchScaenus implements Runnable {
   private int intervalInTicks;
   
   public WatchScaenus( int intervalInSeconds ) {
-    Foramina.log("Scheduler created.");
     
     this.intervalInSeconds = intervalInSeconds;
     this.intervalInTicks   = this.intervalInSeconds * 20;
@@ -38,8 +51,6 @@ public class WatchScaenus implements Runnable {
   }
   
   public void run() {
-    Foramina.log("\n");
-    Foramina.log("Watching the Scaenus");
     
     List<ForaminaPlayer> players = ForaminaPlayer.getPlayers();
    
