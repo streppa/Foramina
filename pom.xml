@@ -134,4 +134,8 @@
     </plugins>
   </build>
 
+  <ciManagement>
+  	<system>jenkins</system>
+  	<url>http://ci.fivepoints.st</url>
+  </ciManagement>
 </project>
