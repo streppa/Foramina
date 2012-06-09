@@ -1,52 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>st.fivepoints</groupId>
-  <artifactId>foramina</artifactId>
+  <artifactId>Foramina</artifactId>
   <version>dev-SNAPSHOT</version>
   <name>Foramina</name>
   <description></description>
+  
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.inceptionYear>2012</project.inceptionYear>
+    <author.email>streppa@gmail.com</author.email>
+    <author.name>Scott Treppa</author.name>
+    <author.username>lose_the_grimm</author.username>
   </properties>
+  
+  <!-- License -->
+  <licenses>
+    <license>
+      <name>GNU LESSER GENERAL PUBLIC LICENSE Version 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  
   <!-- Repository locations -->
   <repositories>
     <repository>
       <id>bukkit-repo</id>
-      <url>http://repo.bukkit.org/content/groups/public/</url>
+      <url>http://repo.bukkit.org/content/groups/public</url>
     </repository>
     <repository>
       <id>spout-api-repo</id>
-      <url>http://repo.spout.org</url>
+      <url>http://repo.spout.org/</url>
     </repository>
   </repositories>
+  
   <!--  Dependencies -->
   <dependencies>
-    <dependency>
-      <groupId>org.getspout</groupId>
-      <artifactId>spoutpluginapi</artifactId>
-      <version>dev-SNAPSHOT</version>
-    </dependency>
+
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-jdk14</artifactId>
       <version>1.6.4</version>
     </dependency>
+    
     <dependency>
       <groupId>org.xerial</groupId>
       <artifactId>sqlite-jdbc</artifactId>
       <version>3.7.2</version>
     </dependency>
+    
+    <!-- Bukkit -->
     <dependency>
-    	<groupId>org.bukkit</groupId>
-    	<artifactId>bukkit</artifactId>
-    	<version>1.2.3-R0.2-SNAPSHOT</version>
+      <groupId>org.bukkit</groupId>
+      <artifactId>bukkit</artifactId>
+      <version>1.2.5-R1.2-SNAPSHOT</version>
     </dependency>
+    
+    <!-- Spout -->
+    <dependency>
+      <groupId>org.getspout</groupId>
+      <artifactId>spoutplugin</artifactId>
+      <version>dev-SNAPSHOT</version>
+    </dependency>
+    
   </dependencies>
+  
+  <!-- Source code -->
+  <scm>
+    <developerConnection>scm:git:git@github.com:streppa/${project.name}.git</developerConnection>
+    <connection>scm:git:git://github.com/streppa/${project.name}.git</connection>
+    <url>https://github.com/streppa/${project.name}</url>
+  </scm>
+  
   <build>
     <defaultGoal>clean install</defaultGoal>
     <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
     <!-- Resources -->
     <resources>
+      <resource>
+        <targetPath>.</targetPath>
+        <filtering>false</filtering>
+        <directory>${basedir}</directory>
+        <includes>
+          <include>LICENSE.txt</include>
+        </includes>
+      </resource>
       <resource>
         <targetPath>.</targetPath>
         <filtering>true</filtering>
@@ -68,6 +108,30 @@
         <artifactId>maven-jar-plugin</artifactId>
         <version>2.3.2</version>
       </plugin>
+      <plugin>
+      	<groupId>com.mycila.maven-license-plugin</groupId>
+      	<artifactId>maven-license-plugin</artifactId>
+      	<configuration>
+          <basedir>${basedir}</basedir>
+          <header>${basedir}/../../resources/HEADER.txt</header>
+          <includes>
+            <include>src/**</include>
+          </includes>
+          <excludes>
+            <exclude>**/*.yml</exclude>
+          </excludes>
+          <properties>
+            <project>${project.name}</project>
+            <year>${project.inceptionYear}</year>
+            <author>${author.name}</author>
+            <username>${author.username}</username>
+            <email>${author.email}</email>
+          </properties>
+          <strictCheck>true</strictCheck>
+      	</configuration>
+      	<version>1.10.b1</version>
+      </plugin>
     </plugins>
   </build>
+
 </project>
