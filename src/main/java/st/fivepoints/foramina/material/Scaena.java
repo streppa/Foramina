@@ -1,7 +1,6 @@
-// $Id$
-/*
+/**
  * Foramina
- * Copyright (C) 2011 Scott Treppa [lose_the_grimm]
+ * Copyright (C) 2012 Scott Treppa <streppa@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,8 +14,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package st.fivepoints.foramina.material;
 
 import org.bukkit.Location;
@@ -38,9 +36,10 @@ import st.fivepoints.foramina.gui.Composer;
 public class Scaena extends GenericCustomBlock {
 
   private static final int textureSize = 256;
-  private static final int spriteSize  = 16;
-  private static final String textureUrl = "http://dl.dropbox.com/u/104908/foramina-texture.png";
-  private static final Texture texture = new Texture(Foramina.instance, textureUrl, textureSize, textureSize, spriteSize); 
+  private static final int spriteSize  = 32;
+  private static final String textureUrl = "http://dl.dropbox.com/u/104908/portal-dark.png";
+  private static final Texture texture = new Texture(Foramina.instance, textureUrl, textureSize, textureSize, spriteSize);
+  private static final String startSoundUrl = "http://dl.dropbox.com/u/104908/foramina-activate.wav";
   
   public Scaena() {
     super(Foramina.instance, "Scaena", 4, new ScaenaDesign());
@@ -121,7 +120,7 @@ public class Scaena extends GenericCustomBlock {
     return spriteSize;
   }
 
-  public static String getTextureURL() {
+  public static String getTextureUrl() {
     return textureUrl;
   }
 
@@ -129,5 +128,8 @@ public class Scaena extends GenericCustomBlock {
     return texture;
   }
 
+  public static String getStartSoundUrl() {
+    return startSoundUrl;
+  }
 
 }

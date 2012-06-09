@@ -2,7 +2,7 @@ name: Foramina
 author: Scott Treppa
 
 main: st.fivepoints.foramina.Foramina
-version: 0.1
+version: 1.0
 
 depend: [Spout]
 

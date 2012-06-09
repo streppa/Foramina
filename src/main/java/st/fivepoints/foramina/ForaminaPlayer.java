@@ -1,7 +1,6 @@
-// $Id$
-/*
+/**
  * Foramina
- * Copyright (C) 2011 Scott Treppa [lose_the_grimm]
+ * Copyright (C) 2012 Scott Treppa <streppa@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,8 +14,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package st.fivepoints.foramina;
 
 import java.util.ArrayList;
@@ -24,7 +22,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.bukkit.entity.Player;
+import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
+
+import st.fivepoints.foramina.material.Scaena;
 
 public class ForaminaPlayer {
 
@@ -97,6 +98,9 @@ public class ForaminaPlayer {
   
   public void startTimer() {
     this.timer = new Date();
+    Foramina.log("The sound should start playing now.");
+    
+    SpoutManager.getSoundManager().playGlobalCustomSoundEffect(Foramina.instance, Scaena.getStartSoundUrl(), true, this.player.getLocation(), 16, 100);
   }
   
   public void clearTimer() {

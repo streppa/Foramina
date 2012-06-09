@@ -1,7 +1,6 @@
-// $Id$
-/*
+/**
  * Foramina
- * Copyright (C) 2011 Scott Treppa [lose_the_grimm]
+ * Copyright (C) 2012 Scott Treppa <streppa@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,8 +14,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package st.fivepoints.foramina.gui.container;
 
 import java.util.ArrayList;
@@ -25,8 +23,6 @@ import java.util.List;
 import org.getspout.spoutapi.gui.ContainerType;
 import org.getspout.spoutapi.gui.GenericContainer;
 import org.getspout.spoutapi.gui.RenderPriority;
-import org.getspout.spoutapi.gui.WidgetAnchor;
-
 import st.fivepoints.foramina.Foramina;
 import st.fivepoints.foramina.ForaminaGlyph;
 import st.fivepoints.foramina.ScaenaData;
