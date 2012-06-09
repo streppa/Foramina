@@ -51,7 +51,7 @@ public class ForaminaListener implements Listener {
   }
   
   /** codename_B's BananaChunk plugin uses this ingenious method of forcing
-   * Bukkit to refresh the chunk the player is teleporting into.
+   * Bukkit to refresh the chunk the player is teleporting into. Woot.
    */
   @EventHandler
   public void onPlayerTeleport( PlayerTeleportEvent event ) {
