@@ -18,14 +18,17 @@
 package st.fivepoints.foramina;
 
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -78,7 +81,6 @@ public class ForaminaListener implements Listener {
     ForaminaPlayer.destroy(foraminaPlayer);
   }
   
-/*
   @EventHandler
   public void onPlayerInteract( PlayerInteractEvent event ) {
     if ( event.getAction() == Action.RIGHT_CLICK_BLOCK ) {
@@ -87,5 +89,5 @@ public class ForaminaListener implements Listener {
         event.getPlayer().sendMessage("&3x: &b" + location.getX() + "  &3y: &b" + location.getY() + " &3z: &b" + location.getZ());
     }
   }
-*/
+
 }
