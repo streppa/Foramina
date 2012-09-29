@@ -41,7 +41,7 @@ public class ScaenaScheduler implements Runnable {
 
     for ( ForaminaPlayer player : players ) {
       SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player.getPlayer());
-      ScaenaData scaena = ScaenaData.findScaenaByPlayer(player.getPlayer());
+      ScaenaData scaena = ScaenaData.findScaenaByPlayerLocation(player.getPlayer());
       
       if ( scaena == null ) {
         player.clearLastScaena();

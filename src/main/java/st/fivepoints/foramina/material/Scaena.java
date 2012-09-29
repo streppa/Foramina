@@ -48,12 +48,12 @@ public class Scaena extends GenericCustomBlock {
 
   public void onNeighborBlockChange(World world, int x, int y, int z, int changedId) { }
   
-  public void onBlockPlace(World world, int x, int y, int z) {
-    ScaenaData scaena = ScaenaData.findScaena(world, x, y, z);
-    if ( scaena == null ) scaena = new ScaenaData(world, x, y, z);
-  }
+  public void onBlockPlace(World world, int x, int y, int z) { }
 
-  public void onBlockPlace(World world, int x, int y, int z, LivingEntity living) { }
+  public void onBlockPlace(World world, int x, int y, int z, LivingEntity living) {
+    ScaenaData scaena = ScaenaData.findScaena(world, x, y, z);
+    if ( scaena == null ) scaena = new ScaenaData(world, x, y, z, living.getUniqueId().toString());
+  }
 
   public void onBlockDestroyed(World world, int x, int y, int z) { 
     ScaenaData scaena = ScaenaData.findScaena(world, x, y, z);
@@ -63,11 +63,20 @@ public class Scaena extends GenericCustomBlock {
   public boolean onBlockInteract(World world, int x, int y, int z, SpoutPlayer player) {
     
     ScaenaData scaena = ScaenaData.findScaena(world, x, y, z);
-    if ( scaena == null ) scaena = new ScaenaData(world, x, y, z);
-    
-    if ( ! (player.getMainScreen().getActivePopup() instanceof Composer) ) {
-      player.getMainScreen().attachPopupScreen(new Composer(scaena, player));
+    if ( scaena == null ) scaena = new ScaenaData(world, x, y, z, player.getUniqueId().toString());
+
+    if ( scaena.getPlayerUid().isEmpty() ) {
+      
     }
+    
+    if ( scaena.getPlayerUid().equals(player.getUniqueId().toString()) || player.isOp() ) {
+      if ( ! (player.getMainScreen().getActivePopup() instanceof Composer) ) {
+        player.getMainScreen().attachPopupScreen(new Composer(scaena, player));
+      }
+    } else {
+      player.sendMessage("This scaena does not belong to you.");
+    }
+    
     return true;
   }
 

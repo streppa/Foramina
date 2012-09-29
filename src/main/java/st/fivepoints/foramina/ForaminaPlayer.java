@@ -98,9 +98,9 @@ public class ForaminaPlayer {
   
   public void startTimer() {
     this.timer = new Date();
-    Foramina.log("The sound should start playing now.");
+    // Foramina.log("The sound should start playing now.");
     
-    SpoutManager.getSoundManager().playGlobalCustomSoundEffect(Foramina.instance, Scaena.getStartSoundUrl(), true, this.player.getLocation(), 16, 100);
+    // SpoutManager.getSoundManager().playGlobalCustomSoundEffect(Foramina.instance, Scaena.getStartSoundUrl(), true, this.player.getLocation(), 16, 100);
   }
   
   public void clearTimer() {

@@ -39,7 +39,7 @@ public class ForaminaPersistence {
         throw new RuntimeException(e);
     }
     
-    if ( ! this.tablesExist() ) this.createTables();
+    if ( ! this.tablesExist() ) { this.createTables(); }
   }
 
   protected final void connect() throws SQLException {
@@ -71,14 +71,14 @@ public class ForaminaPersistence {
 
   private void createTables() {
     Foramina.log("Creating sqlite database.");
-    this.execute("CREATE TABLE locations ( id integer primary key, world_uid text not null, x real not null, y real not null, z real not null)");
+    this.execute("CREATE TABLE locations ( id integer primary key, world_uid text not null, x real not null, y real not null, z real not null, player_uid text)");
     this.execute("CREATE UNIQUE INDEX idx_locations on locations ( world_uid, x, y, z )");
     this.execute("CREATE TABLE scaenus (location_id integer, slot integer, glyph_index integer)");
     this.execute("CREATE UNIQUE INDEX idx_scaenus on scaenus ( location_id, slot )");
   }
   
-  public int insertLocation(String world_uid, double x, double y, double z) {
-    String sql = "INSERT INTO locations (world_uid, x, y, z) VALUES (?, ?, ?, ?)";
+  public int insertLocation(String world_uid, double x, double y, double z, String player_uid) {
+    String sql = "INSERT INTO locations (world_uid, x, y, z, player_uid) VALUES (?, ?, ?, ?, ?)";
     PreparedStatement st = null;
     ResultSet generatedKeys = null;
     int id = 0;
@@ -89,6 +89,7 @@ public class ForaminaPersistence {
       st.setDouble(2, x);
       st.setDouble(3, y);
       st.setDouble(4, z);
+      st.setString(5, player_uid);
       
       int affectedRows = st.executeUpdate();
       if (affectedRows == 0) {
